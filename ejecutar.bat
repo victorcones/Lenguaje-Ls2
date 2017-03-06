@@ -1,2 +1,2 @@
-java -classpath . parser < ejemplos/ejemplo1.txt
+java -classpath . parser < inputs/ejemplo1.txt
 pause
