@@ -9,17 +9,11 @@
 //Navas Angel 24482546
 
 // SECCION DE CODIGO DE USUARIO
-import java.lang.System;
+// import java.lang.System;
+import java.util.*;
+import java.io.*;
+import java_cup.runtime.Symbol;
 
-class Lexico{
-    public static void main (String argv[]) throws java.io.IOException {
-        Yylex yy = new Yylex(System.in);
-        while (yy.yylex() != null) ; 
-    }
-}
-class Yytoken{
-    Yytoken(){}
-}    
 // SECCION DE DIRECTIVAS
 %%
 
@@ -28,6 +22,7 @@ class Yytoken{
     System.exit(0);}
 %eofval}
 
+%cup
 %line
 %char
 %full
@@ -94,7 +89,7 @@ TkIdParametros = ([a-z])({ALFANUMERICO})
 }
 <YYINITIAL> {LineaBlanco}                       
 {
-   return new Symbol(sym.LineaBlanco);
+   return new Symbol(sym.LINEABLANCO);
 }
 <YYINITIAL> {GRAMATICA}                       
 {
@@ -138,7 +133,7 @@ TkIdParametros = ([a-z])({ALFANUMERICO})
 }
 <YYINITIAL> {TkNum}                       
 {
-   return new Symbol(sym.TkNum);
+   return new Symbol(sym.TKNUM);
 }
 <YYINITIAL> {TIPOREAL}                       
 {
@@ -146,7 +141,7 @@ TkIdParametros = ([a-z])({ALFANUMERICO})
 }
 <YYINITIAL> {OPFUNCIONdePARAMETRO}                       
 {
-   return new Symbol(sym.OPFUNCIONdePARAMETRO);
+   return new Symbol(sym.OPFUNCIONDEPARAMETRO);
 }
 <YYINITIAL> {OPARITMETICOS}                       
 {
@@ -167,7 +162,7 @@ TkIdParametros = ([a-z])({ALFANUMERICO})
 }
 <YYINITIAL> {TkIdSimbolos}                       
 {
-    return new Symbol(sym.TkIdSimbolos);
+    return new Symbol(sym.TKIDSIMBOLOS);
 }
 <YYINITIAL> {PARAMETRO}                       
 {
@@ -175,7 +170,7 @@ TkIdParametros = ([a-z])({ALFANUMERICO})
 }
 <YYINITIAL> {TkIdParametros}                       
 {
-    return new Symbol(sym.TkIdParametros);
+    return new Symbol(sym.TKIDPARAMETROS);
 }
 <YYINITIAL> {TIPOREAL}                       
 {
