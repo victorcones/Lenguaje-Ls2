@@ -1,0 +1,29 @@
+import java_cup.runtime.*;
+
+parser code {:
+            public static void main(String args[]) throws Exception {
+                new parser(new Yylex(System.in)).parse();
+            }
+:}
+
+/* TERMINALES */
+
+terminal 	TKTITULO, TKCOMENTARIO, LineaBlanco, GRAMATICA, VALOR, SIMBOLO,
+		 	CONDICIONES, PASOS, ANGULO, POSICION, MATRIZ, GENERATRIZ, PROBABILIDAD,
+		 	TkNum, TIPOREAL, OPFUNCIONdePARAMETRO, OPARITMETICOS, OPRELACIONALES,
+		 	OPLOGICOS, OPGENERATRIZ, TkIdSimbolos, PARAMETRO, TkIdParametros, 
+		 	TIPOREAL, OPMOVIMIENTO, DOBLERAYA, COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS,
+		 	CERRARPARENTESIS, FIN;
+
+/* NO TERMINALES */
+
+non terminal programa;
+non terminal titulo;
+/*non terminal comentario;
+non terminal gramatica;*/
+
+start with programa;
+
+/* PRODUCCIONES */
+
+programa ::= titulo;

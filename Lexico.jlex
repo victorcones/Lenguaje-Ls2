@@ -1,0 +1,240 @@
+//UNIVERSIDAD NACIONAL EXPERIMENTAL DE GUAYANA
+//INGENIERIA EN INFORMATICA
+//UC: LENGUAJES Y COMPILADORES - 2016-2
+//Integrantes:
+//Arzola Jose 24001005
+//Cones Victor 22820595
+//Larez Hector 24890347
+//Mendoza Carlos 22587983
+//Navas Angel 24482546
+
+// SECCION DE CODIGO DE USUARIO
+import java.lang.System;
+
+class Lexico{
+    public static void main (String argv[]) throws java.io.IOException {
+        Yylex yy = new Yylex(System.in);
+        while (yy.yylex() != null) ; 
+    }
+}
+class Yytoken{
+    Yytoken(){}
+}    
+// SECCION DE DIRECTIVAS
+%%
+
+%eofval{
+    {System.out.printf("Final del Archivo\n");
+    System.exit(0);}
+%eofval}
+
+%line
+%char
+%full
+%notunix
+%state COMENTCOMPLETE
+%state COMENTLINE
+
+EspacioOTerminador = [\ \t\f\r|\n]
+LineaBlanco = (\r\n)(\r\n)
+LETRAS = [a-zA-Z]
+DIGITOS = [0-9] 
+
+OPARITMETICOS = "+"|"-"|"/"|"^"|"log"|"*"
+OPRELACIONALES = "<"|">"|"=<"|">="|"="
+OPLOGICOS = /\\|\\/|"¬"|"<="|"<=>"
+OPMOVIMIENTO = "@"|"&"|"#"|"$"|"{"|"}"
+DOBLERAYA = "--"
+COMA = ","
+PUNTO = "."
+DOSPUNTOS = ":"
+ABRIRPARENTESIS = "("
+CERRARPARENTESIS = ")"
+OPGENERATRIZ = "->"
+OPFUNCIONdePARAMETRO = ":="
+
+TITULO = "Titulo"
+COMENTARIOS = "Comentarios"
+GRAMATICA = "Gramatica"
+PARAMETRO = "parametro"
+VALOR = "valor"
+SIMBOLO = "simbolo"
+CONDICIONES = "Condiciones"
+PASOS = "pasos"
+ANGULO = "angulo"
+POSICION = "posicion" 
+MATRIZ = "matriz"
+GENERATRIZ = "generatriz"
+PROBABILIDAD = "probabilidad"
+FIN = "Fin"
+TIPOREAL = "Real"
+
+NOMBREDELTITULO = ((" ")|({LETRAS})|({DIGITOS}))*
+BLOQUEDECOMENTARIO = (({LETRAS})|({DIGITOS})|({EspacioOTerminador}))*
+TKTITULO = ({TITULO})({DOSPUNTOS})({NOMBREDELTITULO})({PUNTO})
+TKCOMENTARIO = ({COMENTARIOS})({BLOQUEDECOMENTARIO})({PUNTO})
+
+REAL = ({DIGITOS})+({PUNTO})({DIGITOS})+
+ENTERO = ({DIGITOS})+
+TkNum = {REAL}|{ENTERO}
+
+ALFANUMERICO = ({LETRAS}|{DIGITOS})*
+TkIdSimbolos = ([A-Z])({DIGITOS})*
+TkIdParametros = ([a-z])({ALFANUMERICO})
+                  
+%%
+
+<YYINITIAL> {TKTITULO}                       
+{
+    return new Symbol(sym.TKTITULO);
+}
+<YYINITIAL> {TKCOMENTARIO}                       
+{
+   return new Symbol(sym.TKCOMENTARIO);
+}
+<YYINITIAL> {LineaBlanco}                       
+{
+   return new Symbol(sym.LineaBlanco);
+}
+<YYINITIAL> {GRAMATICA}                       
+{
+   return new Symbol(sym.GRAMATICA);
+}
+<YYINITIAL> {VALOR}                       
+{
+   return new Symbol(sym.VALOR);
+}
+<YYINITIAL> {SIMBOLO}                       
+{
+   return new Symbol(sym.SIMBOLO);
+}
+<YYINITIAL> {CONDICIONES}                       
+{
+   return new Symbol(sym.CONDICIONES);
+}
+<YYINITIAL> {PASOS}                       
+{
+   return new Symbol(sym.PASOS);
+}
+<YYINITIAL> {ANGULO}                       
+{
+   return new Symbol(sym.ANGULO);
+}
+<YYINITIAL> {POSICION}                       
+{
+   return new Symbol(sym.POSICION);
+}
+<YYINITIAL> {MATRIZ}                       
+{
+   return new Symbol(sym.MATRIZ);
+}
+<YYINITIAL> {GENERATRIZ}                       
+{
+   return new Symbol(sym.GENERATRIZ);
+}
+<YYINITIAL> {PROBABILIDAD}                       
+{
+   return new Symbol(sym.PROBABILIDAD);
+}
+<YYINITIAL> {TkNum}                       
+{
+   return new Symbol(sym.TkNum);
+}
+<YYINITIAL> {TIPOREAL}                       
+{
+   return new Symbol(sym.TIPOREAL);
+}
+<YYINITIAL> {OPFUNCIONdePARAMETRO}                       
+{
+   return new Symbol(sym.OPFUNCIONdePARAMETRO);
+}
+<YYINITIAL> {OPARITMETICOS}                       
+{
+   return new Symbol(sym.OPARITMETICOS);
+}
+<YYINITIAL> {OPRELACIONALES}                       
+{
+   return new Symbol(sym.OPRELACIONALES);
+}
+<YYINITIAL> {OPLOGICOS}                       
+{
+  return new Symbol(sym.OPLOGICOS);
+}
+<YYINITIAL> {OPGENERATRIZ}                       
+{
+   return new Symbol(sym.OPGENERATRIZ);
+
+}
+<YYINITIAL> {TkIdSimbolos}                       
+{
+    return new Symbol(sym.TkIdSimbolos);
+}
+<YYINITIAL> {PARAMETRO}                       
+{
+    return new Symbol(sym.PARAMETRO);
+}
+<YYINITIAL> {TkIdParametros}                       
+{
+    return new Symbol(sym.TkIdParametros);
+}
+<YYINITIAL> {TIPOREAL}                       
+{
+    return new Symbol(sym.TIPOREAL);
+}
+<YYINITIAL> {OPMOVIMIENTO}                       
+{
+    return new Symbol(sym.OPMOVIMIENTO);
+}
+<YYINITIAL> {DOBLERAYA}                       
+{
+    return new Symbol(sym.DOBLERAYA);
+}
+<YYINITIAL> {COMA}                       
+{
+    return new Symbol(sym.COMA);
+}
+<YYINITIAL> {PUNTO}                       
+{
+    return new Symbol(sym.PUNTO);
+}
+<YYINITIAL> {DOSPUNTOS}                       
+{
+    return new Symbol(sym.DOSPUNTOS);
+}
+<YYINITIAL> {ABRIRPARENTESIS}                       
+{
+    return new Symbol(sym.ABRIRPARENTESIS);
+}
+<YYINITIAL> {CERRARPARENTESIS}                       
+{
+    return new Symbol(sym.CERRARPARENTESIS);
+}
+<YYINITIAL> {FIN}                       
+{
+    return new Symbol(sym.FIN);
+}
+
+
+<YYINITIAL> {EspacioOTerminador}+   
+{}
+
+<YYINITIAL> .
+{
+    System.out.println("Error lexico initial en <" + yyline + " , " + yychar + 
+        "> no se reconoce " + yytext());
+    yychar = 0;
+}
+
+<COMENTCOMPLETE> .
+{
+    System.out.println("Error lexico en estado comentario completo no se cerro las llaves <" + yyline + " , " + yychar + 
+        "> no se reconoce " + yytext());
+    yychar = 0;
+}
+
+<COMENTLINE> .
+{
+    System.out.println("Error lexico en estado linea <" + yyline + " , " + yychar + 
+        "> no se reconoce " + yytext());
+    yychar = 0;
+}
