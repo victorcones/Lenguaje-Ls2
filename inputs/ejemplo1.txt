@@ -10,3 +10,8 @@ parametro h:Real := (p*q)^0.2
 simbolo F(x,t)
 simbolo X
 simbolo F(x1)
+
+Condiciones
+pasos 10
+angulo 86
+posicion (0.0,0.0) 90

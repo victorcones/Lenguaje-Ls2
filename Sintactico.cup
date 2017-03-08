@@ -30,8 +30,12 @@ non terminal simbolos;
 non terminal simbolo;
 non terminal parametros_simbolos;
 non terminal condiciones;
+non terminal pasos;
+non terminal angulo;
+non terminal posicion;
 non terminal matriz;
 non terminal generatriz;
+
 
 
 start with programa;
@@ -58,14 +62,27 @@ expresiones ::= TKIDPARAMETROS | TKNUM  | TKIDPARAMETROS operacion expresiones |
 
 operacion ::= OPARITMETICOS | OPRELACIONALES;
 
-simbolos ::= simbolo simbolos|;
+simbolos ::= simbolo simbolos | LINEABLANCO condiciones;
 
 simbolo ::= SIMBOLO TKIDSIMBOLOS | SIMBOLO TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS;
 
 parametros_simbolos ::= TKIDPARAMETROS | TKIDPARAMETROS COMA parametros_simbolos;
 
-/*condiciones ::= CONDICIONES LINEABLANCO;
+condiciones ::= CONDICIONES pasos angulo posicion LINEABLANCO matriz;
 
-matriz ::= MATRIZ LINEABLANCO;
+pasos ::= PASOS TKNUM;
 
-generatriz ::= GENERATRIZ LINEABLANCO;*/
+angulo ::= ANGULO TKNUM;
+
+posicion ::= POSICION ABRIRPARENTESIS TKNUM COMA TKNUM CERRARPARENTESIS TKNUM;
+
+matriz ::= MATRIZ movimientos LINEABLANCO;
+
+movimientos ::= # y @ TKIDSIMBOLOS lista_lista_expresiones|$ y & lista_expresiones movimeientos|$ y & lista_expresiones |{ y } lista_lista_expresiones;
+
+
+lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS DOBLERAYA movimientos | ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS | DOBLERAYA movimientos | generatriz;  
+
+lista_expresiones ::= expresiones coma lista_expresiones | expresiones | expresiones| ;
+
+generatriz ::= GENERATRIZ LINEABLANCO;
