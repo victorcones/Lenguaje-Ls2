@@ -24,6 +24,11 @@ non terminal parametros_variables;
 non terminal parametro_variable;
 non terminal parametros_funciones;
 non terminal parametro_funcion;
+non terminal expresiones;
+non terminal operacion;
+non terminal simbolos;
+non terminal simbolo;
+non terminal parametros_simbolos;
 non terminal condiciones;
 non terminal matriz;
 non terminal generatriz;
@@ -39,19 +44,27 @@ titulo ::=  TKTITULO LINEABLANCO;
 
 comentario ::= TKCOMENTARIO LINEABLANCO;
 
-gramatica ::= GRAMATICA parametros_variables parametros_funciones;
+gramatica ::= GRAMATICA parametros_variables;
 
-parametros_variables ::= parametro_variable parametros_variables|; 
+parametros_variables ::= parametro_variable parametros_variables | parametros_funciones; 
 
 parametro_variable ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL VALOR TKNUM;
 
-parametros_funciones ::= parametro_funcion parametros_funciones|;
+parametros_funciones ::= parametro_funcion parametros_funciones | simbolos;
 
-parametro_funcion ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL OPFUNCIONDEPARAMETRO TKNUM;
+parametro_funcion ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL OPFUNCIONDEPARAMETRO expresiones;
 
-/*exp ::= ID | NUMERO | ID UNARYOP |ID UNARYOP operacion exp | ID operacion exp | LP exp RP exp| NUMERO operacion exp | ;
+expresiones ::= TKIDPARAMETROS | TKNUM  | TKIDPARAMETROS operacion expresiones | TKNUM operacion expresiones | ABRIRPARENTESIS expresiones CERRARPARENTESIS operacion expresiones | ABRIRPARENTESIS expresiones CERRARPARENTESIS; 
 
-condiciones ::= CONDICIONES LINEABLANCO;
+operacion ::= OPARITMETICOS | OPRELACIONALES;
+
+simbolos ::= simbolo simbolos;
+
+simbolo ::= SIMBOLO TKIDSIMBOLOS | SIMBOLO TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS;
+
+parametros_simbolos ::= TKIDPARAMETROS | TKIDPARAMETROS COMA parametros_simbolos;
+
+/*condiciones ::= CONDICIONES LINEABLANCO;
 
 matriz ::= MATRIZ LINEABLANCO;
 
