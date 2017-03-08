@@ -4,18 +4,5 @@ Comentarios
 Ver el ejemplo 3 en el documento.
 
 Gramatica
-simbolo F
-
-Condiciones
-pasos 4
-angulo 90
-posicion (0.0,0.0) 90
-
-matriz
-#F--$--#F--$--#F--$--#F
-
-generatriz
-F ->
-#F--$--#F--&--#F--&--#F--#F--$--#F--$--#F--&--#F
-
-Fin
+parametro c:Real valor 1.0
+parametro p:Real := 0.3

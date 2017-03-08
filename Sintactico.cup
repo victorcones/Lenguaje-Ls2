@@ -9,7 +9,7 @@ parser code {:
 /* TERMINALES */
 
 terminal 	TKTITULO, TKCOMENTARIO, LINEABLANCO, GRAMATICA, VALOR, SIMBOLO,
-		 	CONDICIONES, PASOS, ANGULO, POSICION, MATRIZ, GENERATRIZ, PROBABILIDAD,
+		 	CONDICIONES, COMENTARIOS, PASOS, ANGULO, POSICION, MATRIZ, GENERATRIZ, PROBABILIDAD,
 		 	TKNUM, TIPOREAL, OPFUNCIONDEPARAMETRO, OPARITMETICOS, OPRELACIONALES,
 		 	OPLOGICOS, OPGENERATRIZ, TKIDSIMBOLOS, PARAMETRO, TKIDPARAMETROS, 
 		 	OPMOVIMIENTO, DOBLERAYA, COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, FIN;
@@ -18,13 +18,41 @@ terminal 	TKTITULO, TKCOMENTARIO, LINEABLANCO, GRAMATICA, VALOR, SIMBOLO,
 
 non terminal programa;
 non terminal titulo;
-/*non terminal comentario;
-non terminal gramatica;*/
+non terminal comentario;
+non terminal gramatica;
+non terminal parametros_variables;
+non terminal parametro_variable;
+non terminal parametros_funciones;
+non terminal parametro_funcion;
+non terminal condiciones;
+non terminal matriz;
+non terminal generatriz;
+
 
 start with programa;
 
 /* PRODUCCIONES */
 
-programa ::= titulo;
+programa ::= titulo comentario gramatica;
 
-titulo   ::= TKTITULO;
+titulo ::=  TKTITULO LINEABLANCO;
+
+comentario ::= TKCOMENTARIO LINEABLANCO;
+
+gramatica ::= GRAMATICA parametros_variables parametros_funciones;
+
+parametros_variables ::= parametro_variable parametros_variables|; 
+
+parametro_variable ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL VALOR TKNUM;
+
+parametros_funciones ::= parametro_funcion parametros_funciones|;
+
+parametro_funcion ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL OPFUNCIONDEPARAMETRO TKNUM;
+
+/*exp ::= ID | NUMERO | ID UNARYOP |ID UNARYOP operacion exp | ID operacion exp | LP exp RP exp| NUMERO operacion exp | ;
+
+condiciones ::= CONDICIONES LINEABLANCO;
+
+matriz ::= MATRIZ LINEABLANCO;
+
+generatriz ::= GENERATRIZ LINEABLANCO;*/

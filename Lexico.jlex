@@ -71,11 +71,11 @@ TKCOMENTARIO = ({COMENTARIOS})({BLOQUEDECOMENTARIO})({PUNTO})
 
 REAL = ({DIGITOS})+({PUNTO})({DIGITOS})+
 ENTERO = ({DIGITOS})+
-TkNum = {REAL}|{ENTERO}
+TKNUM = {REAL}|{ENTERO}
 
 ALFANUMERICO = ({LETRAS}|{DIGITOS})*
-TkIdSimbolos = ([A-Z])({DIGITOS})*
-TkIdParametros = ([a-z])({ALFANUMERICO})
+TKIDSIMBOLOS = ([A-Z])({DIGITOS})*
+TKIDPARAMETROS = ([a-z])({ALFANUMERICO})
                   
 %%
 
@@ -131,7 +131,7 @@ TkIdParametros = ([a-z])({ALFANUMERICO})
 {
    return new Symbol(sym.PROBABILIDAD);
 }
-<YYINITIAL> {TkNum}                       
+<YYINITIAL> {TKNUM}                       
 {
    return new Symbol(sym.TKNUM);
 }
@@ -160,7 +160,7 @@ TkIdParametros = ([a-z])({ALFANUMERICO})
    return new Symbol(sym.OPGENERATRIZ);
 
 }
-<YYINITIAL> {TkIdSimbolos}                       
+<YYINITIAL> {TKIDSIMBOLOS}                       
 {
     return new Symbol(sym.TKIDSIMBOLOS);
 }
@@ -168,7 +168,7 @@ TkIdParametros = ([a-z])({ALFANUMERICO})
 {
     return new Symbol(sym.PARAMETRO);
 }
-<YYINITIAL> {TkIdParametros}                       
+<YYINITIAL> {TKIDPARAMETROS}                       
 {
     return new Symbol(sym.TKIDPARAMETROS);
 }
