@@ -53,7 +53,7 @@ comentario ::= TKCOMENTARIO LINEABLANCO;
 
 gramatica ::= GRAMATICA parametros_variables;
 
-parametros_variables ::= parametro_variable parametros_variables | parametros_funciones ; 
+parametros_variables ::= parametro_variable parametros_variables | parametros_funciones; 
 
 parametro_variable ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL VALOR TKNUM;
 
@@ -65,7 +65,11 @@ expresiones ::= TKIDPARAMETROS | TKNUM  | TKIDPARAMETROS operacion expresiones |
 
 operacion ::= OPARITMETICOS | OPRELACIONALES;
 
+<<<<<<< HEAD
 simbolos ::= simbolo simbolos | LINEABLANCO condiciones;
+=======
+simbolos ::= simbolo simbolos;
+>>>>>>> parent of 420fedc... Se agrego vacio en simbolos
 
 simbolo ::= SIMBOLO TKIDSIMBOLOS | SIMBOLO TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS;
 
