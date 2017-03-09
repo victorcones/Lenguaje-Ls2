@@ -24,11 +24,6 @@ non terminal parametros_variables;
 non terminal parametro_variable;
 non terminal parametros_funciones;
 non terminal parametro_funcion;
-non terminal expresiones;
-non terminal operacion;
-non terminal simbolos;
-non terminal simbolo;
-non terminal parametros_simbolos;
 non terminal condiciones;
 non terminal pasos;
 non terminal angulo;
@@ -51,18 +46,19 @@ titulo ::=  TKTITULO LINEABLANCO;
 
 comentario ::= TKCOMENTARIO LINEABLANCO;
 
-gramatica ::= GRAMATICA parametros_variables;
+gramatica ::= GRAMATICA parametros_variables parametros_funciones;
 
-parametros_variables ::= parametro_variable parametros_variables | parametros_funciones; 
+parametros_variables ::= parametro_variable parametros_variables|; 
 
 parametro_variable ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL VALOR TKNUM;
 
-parametros_funciones ::= parametro_funcion parametros_funciones | simbolos;
+parametros_funciones ::= parametro_funcion parametros_funciones|;
 
-parametro_funcion ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL OPFUNCIONDEPARAMETRO expresiones;
+parametro_funcion ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL OPFUNCIONDEPARAMETRO TKNUM;
 
-expresiones ::= TKIDPARAMETROS | TKNUM  | TKIDPARAMETROS operacion expresiones | TKNUM operacion expresiones | ABRIRPARENTESIS expresiones CERRARPARENTESIS operacion expresiones | ABRIRPARENTESIS expresiones CERRARPARENTESIS; 
+/*exp ::= ID | NUMERO | ID UNARYOP |ID UNARYOP operacion exp | ID operacion exp | LP exp RP exp| NUMERO operacion exp | ;
 
+<<<<<<< HEAD
 operacion ::= OPARITMETICOS | OPRELACIONALES;
 
 <<<<<<< HEAD
@@ -89,6 +85,9 @@ matriz ::= MATRIZ movimientos LINEABLANCO;
 | ABRIRLLAVE movimientos | CERRARLLAVE generatriz | CERRARLLAVE DOBLERAYA movimientos;
 
 lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS DOBLERAYA movimientos | ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS generatriz | DOBLERAYA movimientos | generatriz | generatriz movimientos;  
+=======
+condiciones ::= CONDICIONES LINEABLANCO;
+>>>>>>> parent of bcc7d2e... funciones expresiones simbolos
 
 lista_expresiones ::= expresiones COMA lista_expresiones | expresiones;
 

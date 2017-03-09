@@ -32,7 +32,6 @@ import java_cup.runtime.Symbol;
 
 EspacioOTerminador = [\ \t\f\r|\n]
 LineaBlanco = (\r\n)(\r\n)
-FINDELINEA = (\r\n)
 LETRAS = [a-zA-Z]
 DIGITOS = [0-9] 
 
@@ -110,7 +109,6 @@ TKIDPARAMETROS = ([a-z])({ALFANUMERICO})
 {
     return new Symbol(sym.CERRARLLAVE);
 }
-
 <YYINITIAL> {TKCOMENTARIO}                       
 {
    return new Symbol(sym.TKCOMENTARIO);
