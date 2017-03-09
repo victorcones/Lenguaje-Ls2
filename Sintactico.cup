@@ -12,7 +12,7 @@ terminal 	TKTITULO, TKCOMENTARIO, LINEABLANCO, GRAMATICA, VALOR, SIMBOLO,
 		 	CONDICIONES, COMENTARIOS, PASOS, ANGULO, POSICION, MATRIZ, GENERATRIZ, PROBABILIDAD,
 		 	TKNUM, TIPOREAL, OPFUNCIONDEPARAMETRO, OPARITMETICOS, OPRELACIONALES,
 		 	OPLOGICOS, OPGENERATRIZ, TKIDSIMBOLOS, PARAMETRO, TKIDPARAMETROS, 
-		 	OPMOVIMIENTO, DOBLERAYA, COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, FIN;
+		 	NUMERAL,ARROBA,DOLLAR,AMPERSAND,ABRIRLLAVE,CERRARLLAVE, DOBLERAYA, COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, FIN;
 
 /* NO TERMINALES */
 
@@ -34,6 +34,9 @@ non terminal pasos;
 non terminal angulo;
 non terminal posicion;
 non terminal matriz;
+non terminal movimientos;
+non terminal lista_lista_expresiones;
+non terminal lista_expresiones;
 non terminal generatriz;
 
 
@@ -78,11 +81,11 @@ posicion ::= POSICION ABRIRPARENTESIS TKNUM COMA TKNUM CERRARPARENTESIS TKNUM;
 
 matriz ::= MATRIZ movimientos LINEABLANCO;
 
-movimientos ::= # y @ TKIDSIMBOLOS lista_lista_expresiones|$ y & lista_expresiones movimeientos|$ y & lista_expresiones |{ y } lista_lista_expresiones;
+/*movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones | ARROBA TKIDSIMBOLOS lista_lista_expresiones | DOLLAR lista_lista_expresiones | AMPERSAND lista_lista_expresiones 
+| ABRIRLLAVE movimientos | CERRARLLAVE generatriz | CERRARLLAVE DOBLERAYA movimientos;
 
+lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS DOBLERAYA movimientos | ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS generatriz | DOBLERAYA movimientos | generatriz | generatriz movimientos;  
 
-lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS DOBLERAYA movimientos | ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS | DOBLERAYA movimientos | generatriz;  
+lista_expresiones ::= expresiones COMA lista_expresiones | expresiones;
 
-lista_expresiones ::= expresiones coma lista_expresiones | expresiones | expresiones| ;
-
-generatriz ::= GENERATRIZ LINEABLANCO;
+generatriz ::= GENERATRIZ LINEABLANCO|;*/
