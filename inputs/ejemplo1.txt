@@ -6,3 +6,4 @@ Ver el ejemplo 3 en el documento.
 Gramatica
 parametro c:Real valor 1.0
 parametro p:Real := 0.3
+simbolo F(x,t)

@@ -67,13 +67,11 @@ operacion ::= OPARITMETICOS | OPRELACIONALES;
 
 simbolos ::= simbolo simbolos | LINEABLANCO condiciones;
 
-simbolos ::= simbolo simbolos;
-
 simbolo ::= SIMBOLO TKIDSIMBOLOS | SIMBOLO TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS;
 
 parametros_simbolos ::= TKIDPARAMETROS | TKIDPARAMETROS COMA parametros_simbolos;
 
-condiciones ::= CONDICIONES pasos angulo posicion LINEABLANCO matriz;
+condiciones ::= CONDICIONES pasos angulo posicion LINEABLANCO |  /*matriz*/;
 
 pasos ::= PASOS TKNUM;
 
