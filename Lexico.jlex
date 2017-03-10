@@ -32,14 +32,20 @@ import java_cup.runtime.Symbol;
 
 EspacioOTerminador = [\ \t\f\r|\n]
 LineaBlanco = (\r\n)(\r\n)
-FINDELINEA = (\r\n)
 LETRAS = [a-zA-Z]
 DIGITOS = [0-9] 
 
 OPARITMETICOS = "+"|"-"|"/"|"^"|"log"|"*"
 OPRELACIONALES = "<"|">"|"=<"|">="|"="
 OPLOGICOS = /\\|\\/|"¬"|"<="|"<=>"
-OPMOVIMIENTO = "@"|"&"|"#"|"$"|"{"|"}"
+
+ARROBA = "@"
+ASPERSAR = "&"
+NUMERAL = "#"
+DOLAR = "$"
+APILAR = "{"
+DESAPILAR = "}"
+
 DOBLERAYA = "--"
 COMA = ","
 PUNTO = "."
@@ -178,9 +184,29 @@ TKIDPARAMETROS = ([a-z])({ALFANUMERICO})
 {
     return new Symbol(sym.TIPOREAL);
 }
-<YYINITIAL> {OPMOVIMIENTO}                       
+<YYINITIAL> {ARROBA}                       
 {
-    return new Symbol(sym.OPMOVIMIENTO);
+    return new Symbol(sym.ARROBA);
+}
+<YYINITIAL> {ASPERSAR}                       
+{
+    return new Symbol(sym.ASPERSAR);
+}
+<YYINITIAL> {NUMERAL}                       
+{
+    return new Symbol(sym.NUMERAL);
+}
+<YYINITIAL> {DOLAR}                       
+{
+    return new Symbol(sym.DOLAR);
+}
+<YYINITIAL> {APILAR}                       
+{
+    return new Symbol(sym.APILAR);
+}
+<YYINITIAL> {DESAPILAR}                       
+{
+    return new Symbol(sym.DESAPILAR);
 }
 <YYINITIAL> {DOBLERAYA}                       
 {

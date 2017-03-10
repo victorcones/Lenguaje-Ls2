@@ -12,7 +12,7 @@ terminal 	TKTITULO, TKCOMENTARIO, LINEABLANCO, GRAMATICA, VALOR, SIMBOLO,
 		 	CONDICIONES, COMENTARIOS, PASOS, ANGULO, POSICION, MATRIZ, GENERATRIZ, PROBABILIDAD,
 		 	TKNUM, TIPOREAL, OPFUNCIONDEPARAMETRO, OPARITMETICOS, OPRELACIONALES,
 		 	OPLOGICOS, OPGENERATRIZ, TKIDSIMBOLOS, PARAMETRO, TKIDPARAMETROS, 
-		 	OPMOVIMIENTO, DOBLERAYA, COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, FIN;
+		 	DOLAR, ARROBA, ASPERSAR, NUMERAL, APILAR, DESAPILAR, DOBLERAYA, COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, FIN;
 
 /* NO TERMINALES */
 
@@ -60,7 +60,7 @@ parametro_funcion ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL OPFUNCIONDEPAR
 
 expresiones ::= TKIDPARAMETROS | TKNUM  | TKIDPARAMETROS operacion expresiones | TKNUM operacion expresiones | ABRIRPARENTESIS expresiones CERRARPARENTESIS operacion expresiones | ABRIRPARENTESIS expresiones CERRARPARENTESIS; 
 
-operacion ::= OPARITMETICOS | OPRELACIONALES;
+operacion ::= OPARITMETICOS;
 
 simbolos ::= simbolo simbolos | LINEABLANCO condiciones;
 
@@ -68,7 +68,7 @@ simbolo ::= SIMBOLO TKIDSIMBOLOS | SIMBOLO TKIDSIMBOLOS ABRIRPARENTESIS parametr
 
 parametros_simbolos ::= TKIDPARAMETROS | TKIDPARAMETROS COMA parametros_simbolos;
 
-condiciones ::= CONDICIONES pasos angulo posicion /*LINEABLANCO matriz*/;
+condiciones ::= CONDICIONES pasos angulo posicion LINEABLANCO matriz;
 
 pasos ::= PASOS TKNUM;
 
@@ -76,9 +76,18 @@ angulo ::= ANGULO TKNUM;
 
 posicion ::= POSICION ABRIRPARENTESIS TKNUM COMA TKNUM CERRARPARENTESIS TKNUM;
 /*
-matriz ::= MATRIZ movimientos LINEABLANCO;
+matriz ::= MATRIZ movimientos;
 
-movimientos ::= # y @ TKIDSIMBOLOS lista_lista_expresiones|$ y & lista_expresiones movimeientos|$ y & lista_expresiones |{ y } lista_lista_expresiones;
+movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones siguiente | 
+				ARROBA  TKIDSIMBOLOS lista_lista_expresiones siguiente |
+				DOLAR   	dolar_aspersar siguiente | 
+				ASPERSAR 	dolar_aspersar siguiente |
+				APILAR  	movimientos; 
+
+dolar_aspersar ::= ABRIRPARENTESIS expresiones CERRARPARENTESIS |;
+
+siguiente ::= DOBLERAYA movimientos | LINEABLANCO generatriz | DESAPILAR movimientos;
+
 
 
 lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS DOBLERAYA movimientos | ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS | DOBLERAYA movimientos | generatriz;  
