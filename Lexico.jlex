@@ -32,13 +32,19 @@ import java_cup.runtime.Symbol;
 
 EspacioOTerminador = [\ \t\f\r|\n]
 LineaBlanco = (\r\n)(\r\n)
+FINDELINEA = (\r\n)
 LETRAS = [a-zA-Z]
 DIGITOS = [0-9] 
 
 OPARITMETICOS = "+"|"-"|"/"|"^"|"log"|"*"
 OPRELACIONALES = "<"|">"|"=<"|">="|"="
 OPLOGICOS = /\\|\\/|"¬"|"<="|"<=>"
-OPMOVIMIENTO = "@"|"&"|"#"|"$"|"{"|"}"
+NUMERAL = "#"
+ARROBA = "@"
+DOLLAR = "$"
+AMPERSAND = "&"
+ABRIRLLAVE = "{"
+CERRARLLAVE = "}"
 DOBLERAYA = "--"
 COMA = ","
 PUNTO = "."
@@ -79,10 +85,32 @@ TKIDPARAMETROS = ([a-z])({ALFANUMERICO})
                   
 %%
 
-<YYINITIAL> {TKTITULO}                       
+<YYINITIAL> {NUMERAL}                       
 {
-    return new Symbol(sym.TKTITULO);
+    return new Symbol(sym.NUMERAL);
 }
+
+<YYINITIAL> {ARROBA}                       
+{
+   return new Symbol(sym.ARROBA);
+}
+<YYINITIAL> {DOLLAR}                       
+{
+   return new Symbol(sym.DOLLAR);
+}
+<YYINITIAL> {AMPERSAND}                       
+{
+   return new Symbol(sym.AMPERSAND);
+}
+<YYINITIAL> {ABRIRLLAVE}                       
+{
+   return new Symbol(sym.ABRIRLLAVE);
+}
+<YYINITIAL> {CERRARLLAVE}                       
+{
+    return new Symbol(sym.CERRARLLAVE);
+}
+
 <YYINITIAL> {TKCOMENTARIO}                       
 {
    return new Symbol(sym.TKCOMENTARIO);
@@ -175,10 +203,6 @@ TKIDPARAMETROS = ([a-z])({ALFANUMERICO})
 <YYINITIAL> {TIPOREAL}                       
 {
     return new Symbol(sym.TIPOREAL);
-}
-<YYINITIAL> {OPMOVIMIENTO}                       
-{
-    return new Symbol(sym.OPMOVIMIENTO);
 }
 <YYINITIAL> {DOBLERAYA}                       
 {

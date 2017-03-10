@@ -12,7 +12,7 @@ terminal 	TKTITULO, TKCOMENTARIO, LINEABLANCO, GRAMATICA, VALOR, SIMBOLO,
 		 	CONDICIONES, COMENTARIOS, PASOS, ANGULO, POSICION, MATRIZ, GENERATRIZ, PROBABILIDAD,
 		 	TKNUM, TIPOREAL, OPFUNCIONDEPARAMETRO, OPARITMETICOS, OPRELACIONALES,
 		 	OPLOGICOS, OPGENERATRIZ, TKIDSIMBOLOS, PARAMETRO, TKIDPARAMETROS, 
-		 	OPMOVIMIENTO, DOBLERAYA, COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, FIN;
+		 	NUMERAL,ARROBA,DOLLAR,AMPERSAND,ABRIRLLAVE,CERRARLLAVE, DOBLERAYA, COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, FIN;
 
 /* NO TERMINALES */
 
@@ -24,9 +24,21 @@ non terminal parametros_variables;
 non terminal parametro_variable;
 non terminal parametros_funciones;
 non terminal parametro_funcion;
+non terminal expresiones;
+non terminal operacion;
+non terminal simbolos;
+non terminal simbolo;
+non terminal parametros_simbolos;
 non terminal condiciones;
+non terminal pasos;
+non terminal angulo;
+non terminal posicion;
 non terminal matriz;
+non terminal movimientos;
+non terminal lista_lista_expresiones;
+non terminal lista_expresiones;
 non terminal generatriz;
+
 
 
 start with programa;
@@ -39,20 +51,46 @@ titulo ::=  TKTITULO LINEABLANCO;
 
 comentario ::= TKCOMENTARIO LINEABLANCO;
 
-gramatica ::= GRAMATICA parametros_variables parametros_funciones;
+gramatica ::= GRAMATICA parametros_variables;
 
-parametros_variables ::= parametro_variable parametros_variables|; 
+parametros_variables ::= parametro_variable parametros_variables | parametros_funciones; 
 
 parametro_variable ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL VALOR TKNUM;
 
-parametros_funciones ::= parametro_funcion parametros_funciones|;
+parametros_funciones ::= parametro_funcion parametros_funciones | simbolos;
 
-parametro_funcion ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL OPFUNCIONDEPARAMETRO TKNUM;
+parametro_funcion ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL OPFUNCIONDEPARAMETRO expresiones;
 
-/*exp ::= ID | NUMERO | ID UNARYOP |ID UNARYOP operacion exp | ID operacion exp | LP exp RP exp| NUMERO operacion exp | ;
+expresiones ::= TKIDPARAMETROS | TKNUM  | TKIDPARAMETROS operacion expresiones | TKNUM operacion expresiones | ABRIRPARENTESIS expresiones CERRARPARENTESIS operacion expresiones | ABRIRPARENTESIS expresiones CERRARPARENTESIS; 
 
-condiciones ::= CONDICIONES LINEABLANCO;
+operacion ::= OPARITMETICOS | OPRELACIONALES;
 
-matriz ::= MATRIZ LINEABLANCO;
+simbolos ::= simbolo simbolos | LINEABLANCO condiciones;
 
-generatriz ::= GENERATRIZ LINEABLANCO;*/
+simbolos ::= simbolo simbolos;
+
+simbolo ::= SIMBOLO TKIDSIMBOLOS | SIMBOLO TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS;
+
+parametros_simbolos ::= TKIDPARAMETROS | TKIDPARAMETROS COMA parametros_simbolos;
+
+condiciones ::= CONDICIONES pasos angulo posicion LINEABLANCO matriz;
+
+pasos ::= PASOS TKNUM;
+
+angulo ::= ANGULO TKNUM;
+
+posicion ::= POSICION ABRIRPARENTESIS TKNUM COMA TKNUM CERRARPARENTESIS TKNUM;
+
+matriz ::= MATRIZ /*movimientos LINEABLANCO*/;
+
+/*movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones | ARROBA TKIDSIMBOLOS lista_lista_expresiones | DOLLAR lista_lista_expresiones | AMPERSAND lista_lista_expresiones 
+| ABRIRLLAVE movimientos | CERRARLLAVE generatriz | CERRARLLAVE DOBLERAYA movimientos;
+
+lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS DOBLERAYA movimientos | ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS generatriz | DOBLERAYA movimientos | generatriz | generatriz movimientos;  
+
+lista_expresiones ::= expresiones COMA lista_expresiones | expresiones;
+
+generatriz ::= GENERATRIZ LINEABLANCO|;*/
+
+
+
