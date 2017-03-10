@@ -40,6 +40,11 @@ non terminal lista_expresiones;
 non terminal dolar_aspersar; 
 non terminal siguiente; 
 non terminal generatriz;
+non terminal lista_generatriz;
+non terminal f_generatriz;
+non terminal produccion; 
+non terminal expresion_logica; 
+non terminal probabilidad;
 
 start with programa;
 
@@ -79,7 +84,7 @@ angulo ::= ANGULO TKNUM;
 
 posicion ::= POSICION ABRIRPARENTESIS TKNUM COMA TKNUM CERRARPARENTESIS TKNUM;
 
-matriz ::= MATRIZ movimientos;
+matriz ::= MATRIZ movimientos LINEABLANCO generatriz;
 
 movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones siguiente | 
 				ARROBA  TKIDSIMBOLOS lista_lista_expresiones siguiente |
@@ -89,16 +94,23 @@ movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones siguiente |
 
 dolar_aspersar ::= ABRIRPARENTESIS expresiones CERRARPARENTESIS |;
 
-siguiente ::= DOBLERAYA movimientos | LINEABLANCO generatriz | DESAPILAR DOBLERAYA movimientos | DESAPILAR LINEABLANCO generatriz;
+siguiente ::= DOBLERAYA movimientos |  DESAPILAR DOBLERAYA movimientos | DESAPILAR |;
 
 lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS ;  
 
 lista_expresiones ::= expresiones COMA lista_expresiones | expresiones;
 
-generatriz ::= GENERATRIZ /*lista_generatriz*/ LINEABLANCO;
+generatriz ::= GENERATRIZ lista_generatriz;
 
-/*lista_generatriz ::=  produccion probabilidad movimientos lista_generatriz
+lista_generatriz ::=  produccion probabilidad movimientos f_generatriz | produccion movimientos f_generatriz | FIN;
 
-produccion ::= TKIDSIMBOLOS
+f_generatriz ::= LINEABLANCO lista_generatriz;
 
-probabilidad ::= PROBABILIDAD TKNUM*/
+produccion ::= 	TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS DOSPUNTOS expresion_logica OPGENERATRIZ | 
+				TKIDSIMBOLOS OPGENERATRIZ | 
+				TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS OPGENERATRIZ | 
+				TKIDSIMBOLOS DOSPUNTOS expresion_logica OPGENERATRIZ;
+
+expresion_logica ::= TKIDPARAMETROS OPLOGICOS TKNUM | TKIDPARAMETROS OPRELACIONALES TKNUM;
+
+probabilidad ::= PROBABILIDAD TKNUM;

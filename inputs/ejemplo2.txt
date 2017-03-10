@@ -23,6 +23,15 @@ F(x,t):t=0 ->
 #F(x*p,2)--&--#F(x*h,1)--$--$--#F(x*h,1)--&--#F(x*q,0)
 
 F(x,t):t>0 ->
+probabilidad 0.33
+#F(x,t-1)
+
+F(x,t):t>0 ->
+probabilidad 0.33
+#F(x,t-1)
+
+F(x,a,b,b,t):a>1 ->
+probabilidad 0.33
 #F(x,t-1)
 
 Fin
