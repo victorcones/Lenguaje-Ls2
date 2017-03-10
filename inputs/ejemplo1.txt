@@ -3,7 +3,15 @@ Titulo: Isla de Koch.
 Comentarios
 Ver el ejemplo 3 en el documento.
 
-Gramatica
+Gramatica 
 parametro c:Real valor 1.0
-parametro p:Real := 0.3
+parametro c:Real valor 1.0
+parametro h:Real := (p*q)^0.2
 simbolo F(x,t)
+simbolo X
+simbolo F(x1)
+
+Condiciones
+pasos 10
+angulo 86
+posicion (0.0,0.0) 90

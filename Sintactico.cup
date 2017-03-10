@@ -12,7 +12,7 @@ terminal 	TKTITULO, TKCOMENTARIO, LINEABLANCO, GRAMATICA, VALOR, SIMBOLO,
 		 	CONDICIONES, COMENTARIOS, PASOS, ANGULO, POSICION, MATRIZ, GENERATRIZ, PROBABILIDAD,
 		 	TKNUM, TIPOREAL, OPFUNCIONDEPARAMETRO, OPARITMETICOS, OPRELACIONALES,
 		 	OPLOGICOS, OPGENERATRIZ, TKIDSIMBOLOS, PARAMETRO, TKIDPARAMETROS, 
-		 	NUMERAL,ARROBA,DOLLAR,AMPERSAND,ABRIRLLAVE,CERRARLLAVE, DOBLERAYA, COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, FIN;
+		 	OPMOVIMIENTO, DOBLERAYA, COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, FIN;
 
 /* NO TERMINALES */
 
@@ -34,9 +34,6 @@ non terminal pasos;
 non terminal angulo;
 non terminal posicion;
 non terminal matriz;
-non terminal movimientos;
-non terminal lista_lista_expresiones;
-non terminal lista_expresiones;
 non terminal generatriz;
 
 
@@ -53,7 +50,7 @@ comentario ::= TKCOMENTARIO LINEABLANCO;
 
 gramatica ::= GRAMATICA parametros_variables;
 
-parametros_variables ::= parametro_variable parametros_variables | parametros_funciones; 
+parametros_variables ::= parametro_variable parametros_variables | parametros_funciones ; 
 
 parametro_variable ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL VALOR TKNUM;
 
@@ -71,24 +68,21 @@ simbolo ::= SIMBOLO TKIDSIMBOLOS | SIMBOLO TKIDSIMBOLOS ABRIRPARENTESIS parametr
 
 parametros_simbolos ::= TKIDPARAMETROS | TKIDPARAMETROS COMA parametros_simbolos;
 
-condiciones ::= CONDICIONES pasos angulo posicion LINEABLANCO |  /*matriz*/;
+condiciones ::= CONDICIONES pasos angulo posicion /*LINEABLANCO matriz*/;
 
 pasos ::= PASOS TKNUM;
 
 angulo ::= ANGULO TKNUM;
 
 posicion ::= POSICION ABRIRPARENTESIS TKNUM COMA TKNUM CERRARPARENTESIS TKNUM;
+/*
+matriz ::= MATRIZ movimientos LINEABLANCO;
 
-matriz ::= MATRIZ /*movimientos LINEABLANCO*/;
-
-/*movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones | ARROBA TKIDSIMBOLOS lista_lista_expresiones | DOLLAR lista_lista_expresiones | AMPERSAND lista_lista_expresiones 
-| ABRIRLLAVE movimientos | CERRARLLAVE generatriz | CERRARLLAVE DOBLERAYA movimientos;
-
-lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS DOBLERAYA movimientos | ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS generatriz | DOBLERAYA movimientos | generatriz | generatriz movimientos;  
-
-lista_expresiones ::= expresiones COMA lista_expresiones | expresiones;
-
-generatriz ::= GENERATRIZ LINEABLANCO|;*/
+movimientos ::= # y @ TKIDSIMBOLOS lista_lista_expresiones|$ y & lista_expresiones movimeientos|$ y & lista_expresiones |{ y } lista_lista_expresiones;
 
 
+lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS DOBLERAYA movimientos | ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS | DOBLERAYA movimientos | generatriz;  
 
+lista_expresiones ::= expresiones coma lista_expresiones | expresiones | expresiones| ;
+
+generatriz ::= GENERATRIZ LINEABLANCO;*/

@@ -39,12 +39,7 @@ DIGITOS = [0-9]
 OPARITMETICOS = "+"|"-"|"/"|"^"|"log"|"*"
 OPRELACIONALES = "<"|">"|"=<"|">="|"="
 OPLOGICOS = /\\|\\/|"¬"|"<="|"<=>"
-NUMERAL = "#"
-ARROBA = "@"
-DOLLAR = "$"
-AMPERSAND = "&"
-ABRIRLLAVE = "{"
-CERRARLLAVE = "}"
+OPMOVIMIENTO = "@"|"&"|"#"|"$"|"{"|"}"
 DOBLERAYA = "--"
 COMA = ","
 PUNTO = "."
@@ -85,30 +80,9 @@ TKIDPARAMETROS = ([a-z])({ALFANUMERICO})
                   
 %%
 
-<YYINITIAL> {NUMERAL}                       
+<YYINITIAL> {TKTITULO}                       
 {
-    return new Symbol(sym.NUMERAL);
-}
-
-<YYINITIAL> {ARROBA}                       
-{
-   return new Symbol(sym.ARROBA);
-}
-<YYINITIAL> {DOLLAR}                       
-{
-   return new Symbol(sym.DOLLAR);
-}
-<YYINITIAL> {AMPERSAND}                       
-{
-   return new Symbol(sym.AMPERSAND);
-}
-<YYINITIAL> {ABRIRLLAVE}                       
-{
-   return new Symbol(sym.ABRIRLLAVE);
-}
-<YYINITIAL> {CERRARLLAVE}                       
-{
-    return new Symbol(sym.CERRARLLAVE);
+    return new Symbol(sym.TKTITULO);
 }
 
 <YYINITIAL> {TKCOMENTARIO}                       
@@ -203,6 +177,10 @@ TKIDPARAMETROS = ([a-z])({ALFANUMERICO})
 <YYINITIAL> {TIPOREAL}                       
 {
     return new Symbol(sym.TIPOREAL);
+}
+<YYINITIAL> {OPMOVIMIENTO}                       
+{
+    return new Symbol(sym.OPMOVIMIENTO);
 }
 <YYINITIAL> {DOBLERAYA}                       
 {
