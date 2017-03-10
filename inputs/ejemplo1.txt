@@ -15,3 +15,8 @@ Condiciones
 pasos 10
 angulo 86
 posicion (0.0,0.0) 90
+
+matriz
+#F(x*p,2)--&--#F(x*h,1)--$--$--#F(x*h,1)--&--#F(x*q,0)--{$--#F(x*h,1)}
+
+generatriz

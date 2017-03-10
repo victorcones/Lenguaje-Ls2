@@ -34,9 +34,12 @@ non terminal pasos;
 non terminal angulo;
 non terminal posicion;
 non terminal matriz;
+non terminal movimientos;
+non terminal lista_lista_expresiones;
+non terminal lista_expresiones;
+non terminal dolar_aspersar; 
+non terminal siguiente; 
 non terminal generatriz;
-
-
 
 start with programa;
 
@@ -75,7 +78,7 @@ pasos ::= PASOS TKNUM;
 angulo ::= ANGULO TKNUM;
 
 posicion ::= POSICION ABRIRPARENTESIS TKNUM COMA TKNUM CERRARPARENTESIS TKNUM;
-/*
+
 matriz ::= MATRIZ movimientos;
 
 movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones siguiente | 
@@ -86,12 +89,16 @@ movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones siguiente |
 
 dolar_aspersar ::= ABRIRPARENTESIS expresiones CERRARPARENTESIS |;
 
-siguiente ::= DOBLERAYA movimientos | LINEABLANCO generatriz | DESAPILAR movimientos;
+siguiente ::= DOBLERAYA movimientos | LINEABLANCO generatriz | DESAPILAR DOBLERAYA movimientos | DESAPILAR LINEABLANCO generatriz;
 
+lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS ;  
 
+lista_expresiones ::= expresiones COMA lista_expresiones | expresiones;
 
-lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS DOBLERAYA movimientos | ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS | DOBLERAYA movimientos | generatriz;  
+generatriz ::= GENERATRIZ /*lista_generatriz*/ LINEABLANCO;
 
-lista_expresiones ::= expresiones coma lista_expresiones | expresiones | expresiones| ;
+/*lista_generatriz ::=  produccion probabilidad movimientos lista_generatriz
 
-generatriz ::= GENERATRIZ LINEABLANCO;*/
+produccion ::= TKIDSIMBOLOS
+
+probabilidad ::= PROBABILIDAD TKNUM*/
