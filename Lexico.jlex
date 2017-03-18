@@ -8,19 +8,36 @@
 //Mendoza Carlos 22587983
 //Navas Angel 24482546
 
-// SECCION DE CODIGO DE USUARIO
-// import java.lang.System;
+// CODIGO DE USUARIO
+import java.lang.System;
 import java.util.*;
 import java.io.*;
 import java_cup.runtime.Symbol;
 
-// SECCION DE DIRECTIVAS
+// DIRECTIVAS
 %%
 
 %eofval{
     {System.out.printf("Final del Archivo\n");
     System.exit(0);}
 %eofval}
+
+%{
+    String tok = "";
+
+    private Symbol Token(int token, Object lexema) throws IOException {
+        int linea = yyline + 1;
+        tok = (String)lexema;
+        if (token != sym.EOF)
+            PuntoCodigo.informacionCodigo(linea, tok);
+        return new Symbol(token, lexema);
+    }
+
+    private Symbol Token(int token) throws IOException {
+        return Token(token, yytext());
+    }
+
+%}
 
 %cup
 %line
@@ -30,14 +47,21 @@ import java_cup.runtime.Symbol;
 %state COMENTCOMPLETE
 %state COMENTLINE
 
-EspacioOTerminador = [\ \t\f\r|\n]
-LineaBlanco = (\r\n)(\r\n)
+ESPACIOOTERMINADOR = [\ \t\f\r|\n]
+LINEABLANCO = (\r\n)(\r\n)
+
 LETRAS = [a-zA-Z]
 DIGITOS = [0-9] 
 
-OPARITMETICOS = "+"|"-"|"/"|"^"|"log"|"*"
 OPRELACIONALES = "<"|">"|"=<"|">="|"="
 OPLOGICOS = /\\|\\/|"¬"|"<="|"<=>"
+
+SUMA = "+"
+RESTA = "-"
+MULT = "*"
+DIV = "/"
+LOG = "log"
+ELEVADO = "^"
 
 ARROBA = "@"
 ASPERSAR = "&"
@@ -53,7 +77,7 @@ DOSPUNTOS = ":"
 ABRIRPARENTESIS = "("
 CERRARPARENTESIS = ")"
 OPGENERATRIZ = "->"
-OPFUNCIONdePARAMETRO = ":="
+OPFUNCIONDEPARAMETRO = ":="
 
 TITULO = "Titulo"
 COMENTARIOS = "Comentarios"
@@ -72,7 +96,7 @@ FIN = "Fin"
 TIPOREAL = "Real"
 
 NOMBREDELTITULO = ((" ")|({LETRAS})|({DIGITOS}))*
-BLOQUEDECOMENTARIO = (({LETRAS})|({DIGITOS})|({EspacioOTerminador}))*
+BLOQUEDECOMENTARIO = (({LETRAS})|({DIGITOS})|({ESPACIOOTERMINADOR}))*
 TKTITULO = ({TITULO})({DOSPUNTOS})({NOMBREDELTITULO})({PUNTO})
 TKCOMENTARIO = ({COMENTARIOS})({BLOQUEDECOMENTARIO})({PUNTO})
 
@@ -95,7 +119,7 @@ TKIDPARAMETROS = ([a-z])({ALFANUMERICO})
 {
    return new Symbol(sym.TKCOMENTARIO);
 }
-<YYINITIAL> {LineaBlanco}                       
+<YYINITIAL> {LINEABLANCO}                       
 {
    return new Symbol(sym.LINEABLANCO);
 }
@@ -147,14 +171,36 @@ TKIDPARAMETROS = ([a-z])({ALFANUMERICO})
 {
    return new Symbol(sym.TIPOREAL);
 }
-<YYINITIAL> {OPFUNCIONdePARAMETRO}                       
+<YYINITIAL> {OPFUNCIONDEPARAMETRO}                       
 {
    return new Symbol(sym.OPFUNCIONDEPARAMETRO);
 }
-<YYINITIAL> {OPARITMETICOS}                       
+
+<YYINITIAL> {SUMA}                       
 {
-   return new Symbol(sym.OPARITMETICOS);
+   return new Symbol(sym.SUMA);
 }
+<YYINITIAL> {RESTA}                       
+{
+   return new Symbol(sym.RESTA);
+}
+<YYINITIAL> {MULT}                       
+{
+   return new Symbol(sym.MULT);
+}
+<YYINITIAL> {DIV}                       
+{
+   return new Symbol(sym.DIV);
+}
+<YYINITIAL> {LOG}                       
+{
+   return new Symbol(sym.LOG);
+}
+<YYINITIAL> {ELEVADO}                       
+{
+   return new Symbol(sym.ELEVADO);
+}
+
 <YYINITIAL> {OPRELACIONALES}                       
 {
    return new Symbol(sym.OPRELACIONALES);
@@ -238,7 +284,7 @@ TKIDPARAMETROS = ([a-z])({ALFANUMERICO})
 }
 
 
-<YYINITIAL> {EspacioOTerminador}+   
+<YYINITIAL> {ESPACIOOTERMINADOR}+   
 {}
 
 <YYINITIAL> .

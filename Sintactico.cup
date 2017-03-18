@@ -1,39 +1,116 @@
 import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+action code {:
+	Tabla tabla;
+
+	void inicializar(){
+		tabla = new Tabla();
+	}
+
+	boolean existeSimbolo(String id){
+		return tabla.existeSimbolo(id);    
+	}
+
+	void agregarSimbolo(String id){
+		tabla.addSimbolo(id);
+	}
+
+	void imprimeTS(){
+		tabla.imprimir();
+	}
+:}    
 
 parser code {:
-            public static void main(String args[]) throws Exception {
-                new parser(new Yylex(System.in)).parse();
-            }
+
+	public static void main(String args[]) throws Exception {
+        new parser(new Yylex(System.in)).parse();
+    }
+
+	// Muestra el texto de un error
+	public void report_error(String message) {
+		System.err.println(message);
+	}
+
+	// Muestra un error de sintaxis
+	public void syntax_error(Symbol actual) {
+		if (actual.sym == sym.EOF)
+			report_error("Intruccion incompleta en linea : "+PuntoCodigo.linea+
+				       " Token : "+PuntoCodigo.token);
+		else
+			report_error("Error sintactico en linea : "+PuntoCodigo.linea+
+				       " Token : "+PuntoCodigo.token);
+	}
+
+	// Muestra el texto de un error irrecuperable
+	public void report_fatal_error(String message, Object info) {
+		System.err.println(message);
+	}
+
+	// Muestra un mensaje cuando no se puede seguir analizando
+	public void unrecovered_syntax_error(Symbol actual) {
+	}
+
+	//Muestra un mensaje de error con linea, token y mensaje
+	public void error(String mensaje) {
+		report_error("ERROR -> Linea: "+PuntoCodigo.linea+" Lexema: "+PuntoCodigo.token+" "+mensaje);
+	}
 :}
 
 /* TERMINALES */
 
-terminal 	TKTITULO, TKCOMENTARIO, LINEABLANCO, GRAMATICA, VALOR, SIMBOLO,
-		 	CONDICIONES, COMENTARIOS, PASOS, ANGULO, POSICION, MATRIZ, GENERATRIZ, PROBABILIDAD,
-		 	TKNUM, TIPOREAL, OPFUNCIONDEPARAMETRO, OPARITMETICOS, OPRELACIONALES,
-		 	OPLOGICOS, OPGENERATRIZ, TKIDSIMBOLOS, PARAMETRO, TKIDPARAMETROS, 
-		 	DOLAR, ARROBA, ASPERSAR, NUMERAL, APILAR, DESAPILAR, DOBLERAYA, COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, FIN;
+/* Tokens */
+terminal TKTITULO, TKCOMENTARIO;
+/* Palabras clave */
+terminal 	GRAMATICA, PARAMETRO, VALOR, SIMBOLO, CONDICIONES, PASOS, ANGULO, POSICION,
+			MATRIZ, GENERATRIZ, PROBABILIDAD, FIN, TIPOREAL;
+/* Operadores de movimiento matriz */
+terminal 	DOLAR, ARROBA, ASPERSAR, NUMERAL, APILAR, DESAPILAR, DOBLERAYA;
+/* Operadores aritmeticos */
+terminal    SUMA, RESTA, MULT, DIV, LOG, ELEVADO;
+/* Operadores */
+terminal 	OPLOGICOS, OPRELACIONALES;
+
+terminal 	LINEABLANCO, TKNUM, TKIDSIMBOLOS, TKIDPARAMETROS, 
+		 	COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, OPGENERATRIZ,
+		 	OPFUNCIONDEPARAMETRO;
 
 /* NO TERMINALES */
 
 non terminal programa;
+
 non terminal titulo;
+
 non terminal comentario;
+
 non terminal gramatica;
 non terminal parametros_variables;
 non terminal parametro_variable;
 non terminal parametros_funciones;
 non terminal parametro_funcion;
+
 non terminal expresiones;
-non terminal operacion;
+non terminal expresion;
+
 non terminal simbolos;
 non terminal simbolo;
 non terminal parametros_simbolos;
+
 non terminal condiciones;
 non terminal pasos;
 non terminal angulo;
 non terminal posicion;
+
 non terminal matriz;
+
+/*
+
+
+
+
+
+
 non terminal movimientos;
 non terminal lista_lista_expresiones;
 non terminal lista_expresiones;
@@ -45,6 +122,11 @@ non terminal f_generatriz;
 non terminal produccion; 
 non terminal expresion_logica; 
 non terminal probabilidad;
+*/
+
+precedence left SUMA, RESTA;
+precedence left MULT, DIV;
+precedence left LOG, ELEVADO;
 
 start with programa;
 
@@ -56,32 +138,33 @@ titulo ::=  TKTITULO LINEABLANCO;
 
 comentario ::= TKCOMENTARIO LINEABLANCO;
 
-gramatica ::= GRAMATICA parametros_variables;
+gramatica ::= GRAMATICA parametros_variables ;
 
-parametros_variables ::= parametro_variable parametros_variables | parametros_funciones ; 
-
+parametros_variables ::= parametro_variable parametros_variables | parametros_funciones; 
 parametro_variable ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL VALOR TKNUM;
 
 parametros_funciones ::= parametro_funcion parametros_funciones | simbolos;
-
 parametro_funcion ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL OPFUNCIONDEPARAMETRO expresiones;
 
-expresiones ::= TKIDPARAMETROS | TKNUM  | TKIDPARAMETROS operacion expresiones | TKNUM operacion expresiones | ABRIRPARENTESIS expresiones CERRARPARENTESIS operacion expresiones | ABRIRPARENTESIS expresiones CERRARPARENTESIS; 
-
-operacion ::= OPARITMETICOS;
+expresiones ::= expresion expresiones | expresion;
+expresion ::= 	expresion SUMA 	  expresion |
+				expresion RESTA   expresion |
+				expresion MULT 	  expresion |
+				expresion DIV 	  expresion |
+				expresion LOG 	  expresion |
+				expresion ELEVADO expresion |
+				ABRIRPARENTESIS expresion CERRARPARENTESIS |
+				TKNUM |
+				TKIDPARAMETROS;
 
 simbolos ::= simbolo simbolos | LINEABLANCO condiciones;
-
-simbolo ::= SIMBOLO TKIDSIMBOLOS | SIMBOLO TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS;
-
-parametros_simbolos ::= TKIDPARAMETROS | TKIDPARAMETROS COMA parametros_simbolos;
+simbolo ::=  SIMBOLO TKIDSIMBOLOS | 
+			 SIMBOLO TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS;
+parametros_simbolos ::= TKIDPARAMETROS COMA parametros_simbolos | TKIDPARAMETROS;
 
 condiciones ::= CONDICIONES pasos angulo posicion LINEABLANCO matriz;
-
 pasos ::= PASOS TKNUM;
-
 angulo ::= ANGULO TKNUM;
-
 posicion ::= POSICION ABRIRPARENTESIS TKNUM COMA TKNUM CERRARPARENTESIS TKNUM;
 
 matriz ::= MATRIZ movimientos LINEABLANCO generatriz;
@@ -91,6 +174,20 @@ movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones siguiente |
 				DOLAR   	dolar_aspersar siguiente | 
 				ASPERSAR 	dolar_aspersar siguiente |
 				APILAR  	movimientos; 
+
+/*
+
+
+
+
+
+
+
+
+
+
+
+
 
 dolar_aspersar ::= ABRIRPARENTESIS expresiones CERRARPARENTESIS |;
 
@@ -114,3 +211,4 @@ produccion ::= 	TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESI
 expresion_logica ::= TKIDPARAMETROS OPLOGICOS TKNUM | TKIDPARAMETROS OPRELACIONALES TKNUM;
 
 probabilidad ::= PROBABILIDAD TKNUM;
+*/
