@@ -18,8 +18,11 @@ import java_cup.runtime.Symbol;
 %%
 
 %eofval{
-    {System.out.printf("Final del Archivo\n");
-    System.exit(0);}
+    { 
+        System.out.printf("Final del Archivo\n");
+        // System.exit(0);
+        return Token(sym.EOF); 
+    }
 %eofval}
 
 %{
@@ -112,175 +115,175 @@ TKIDPARAMETROS = ([a-z])({ALFANUMERICO})
 
 <YYINITIAL> {TKTITULO}                       
 {
-    return new Symbol(sym.TKTITULO);
+    return Token(sym.TKTITULO);
 }
 
 <YYINITIAL> {TKCOMENTARIO}                       
 {
-   return new Symbol(sym.TKCOMENTARIO);
+   return Token(sym.TKCOMENTARIO);
 }
 <YYINITIAL> {LINEABLANCO}                       
 {
-   return new Symbol(sym.LINEABLANCO);
+   return Token(sym.LINEABLANCO);
 }
 <YYINITIAL> {GRAMATICA}                       
 {
-   return new Symbol(sym.GRAMATICA);
+   return Token(sym.GRAMATICA);
 }
 <YYINITIAL> {VALOR}                       
 {
-   return new Symbol(sym.VALOR);
+   return Token(sym.VALOR);
 }
 <YYINITIAL> {SIMBOLO}                       
 {
-   return new Symbol(sym.SIMBOLO);
+   return Token(sym.SIMBOLO);
 }
 <YYINITIAL> {CONDICIONES}                       
 {
-   return new Symbol(sym.CONDICIONES);
+   return Token(sym.CONDICIONES);
 }
 <YYINITIAL> {PASOS}                       
 {
-   return new Symbol(sym.PASOS);
+   return Token(sym.PASOS);
 }
 <YYINITIAL> {ANGULO}                       
 {
-   return new Symbol(sym.ANGULO);
+   return Token(sym.ANGULO);
 }
 <YYINITIAL> {POSICION}                       
 {
-   return new Symbol(sym.POSICION);
+   return Token(sym.POSICION);
 }
 <YYINITIAL> {MATRIZ}                       
 {
-   return new Symbol(sym.MATRIZ);
+   return Token(sym.MATRIZ);
 }
 <YYINITIAL> {GENERATRIZ}                       
 {
-   return new Symbol(sym.GENERATRIZ);
+   return Token(sym.GENERATRIZ);
 }
 <YYINITIAL> {PROBABILIDAD}                       
 {
-   return new Symbol(sym.PROBABILIDAD);
+   return Token(sym.PROBABILIDAD);
 }
 <YYINITIAL> {TKNUM}                       
 {
-   return new Symbol(sym.TKNUM);
+   return Token(sym.TKNUM);
 }
 <YYINITIAL> {TIPOREAL}                       
 {
-   return new Symbol(sym.TIPOREAL);
+   return Token(sym.TIPOREAL);
 }
 <YYINITIAL> {OPFUNCIONDEPARAMETRO}                       
 {
-   return new Symbol(sym.OPFUNCIONDEPARAMETRO);
+   return Token(sym.OPFUNCIONDEPARAMETRO);
 }
 
 <YYINITIAL> {SUMA}                       
 {
-   return new Symbol(sym.SUMA);
+   return Token(sym.SUMA);
 }
 <YYINITIAL> {RESTA}                       
 {
-   return new Symbol(sym.RESTA);
+   return Token(sym.RESTA);
 }
 <YYINITIAL> {MULT}                       
 {
-   return new Symbol(sym.MULT);
+   return Token(sym.MULT);
 }
 <YYINITIAL> {DIV}                       
 {
-   return new Symbol(sym.DIV);
+   return Token(sym.DIV);
 }
 <YYINITIAL> {LOG}                       
 {
-   return new Symbol(sym.LOG);
+   return Token(sym.LOG);
 }
 <YYINITIAL> {ELEVADO}                       
 {
-   return new Symbol(sym.ELEVADO);
+   return Token(sym.ELEVADO);
 }
 
 <YYINITIAL> {OPRELACIONALES}                       
 {
-   return new Symbol(sym.OPRELACIONALES);
+   return Token(sym.OPRELACIONALES);
 }
 <YYINITIAL> {OPLOGICOS}                       
 {
-  return new Symbol(sym.OPLOGICOS);
+  return Token(sym.OPLOGICOS);
 }
 <YYINITIAL> {OPGENERATRIZ}                       
 {
-   return new Symbol(sym.OPGENERATRIZ);
+   return Token(sym.OPGENERATRIZ);
 
 }
 <YYINITIAL> {TKIDSIMBOLOS}                       
 {
-    return new Symbol(sym.TKIDSIMBOLOS);
+    return Token(sym.TKIDSIMBOLOS);
 }
 <YYINITIAL> {PARAMETRO}                       
 {
-    return new Symbol(sym.PARAMETRO);
+    return Token(sym.PARAMETRO);
 }
 <YYINITIAL> {TKIDPARAMETROS}                       
 {
-    return new Symbol(sym.TKIDPARAMETROS);
+    return Token(sym.TKIDPARAMETROS);
 }
 <YYINITIAL> {TIPOREAL}                       
 {
-    return new Symbol(sym.TIPOREAL);
+    return Token(sym.TIPOREAL);
 }
 <YYINITIAL> {ARROBA}                       
 {
-    return new Symbol(sym.ARROBA);
+    return Token(sym.ARROBA);
 }
 <YYINITIAL> {ASPERSAR}                       
 {
-    return new Symbol(sym.ASPERSAR);
+    return Token(sym.ASPERSAR);
 }
 <YYINITIAL> {NUMERAL}                       
 {
-    return new Symbol(sym.NUMERAL);
+    return Token(sym.NUMERAL);
 }
 <YYINITIAL> {DOLAR}                       
 {
-    return new Symbol(sym.DOLAR);
+    return Token(sym.DOLAR);
 }
 <YYINITIAL> {APILAR}                       
 {
-    return new Symbol(sym.APILAR);
+    return Token(sym.APILAR);
 }
 <YYINITIAL> {DESAPILAR}                       
 {
-    return new Symbol(sym.DESAPILAR);
+    return Token(sym.DESAPILAR);
 }
 <YYINITIAL> {DOBLERAYA}                       
 {
-    return new Symbol(sym.DOBLERAYA);
+    return Token(sym.DOBLERAYA);
 }
 <YYINITIAL> {COMA}                       
 {
-    return new Symbol(sym.COMA);
+    return Token(sym.COMA);
 }
 <YYINITIAL> {PUNTO}                       
 {
-    return new Symbol(sym.PUNTO);
+    return Token(sym.PUNTO);
 }
 <YYINITIAL> {DOSPUNTOS}                       
 {
-    return new Symbol(sym.DOSPUNTOS);
+    return Token(sym.DOSPUNTOS);
 }
 <YYINITIAL> {ABRIRPARENTESIS}                       
 {
-    return new Symbol(sym.ABRIRPARENTESIS);
+    return Token(sym.ABRIRPARENTESIS);
 }
 <YYINITIAL> {CERRARPARENTESIS}                       
 {
-    return new Symbol(sym.CERRARPARENTESIS);
+    return Token(sym.CERRARPARENTESIS);
 }
 <YYINITIAL> {FIN}                       
 {
-    return new Symbol(sym.FIN);
+    return Token(sym.FIN);
 }
 
 

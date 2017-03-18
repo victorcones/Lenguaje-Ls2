@@ -71,8 +71,10 @@ terminal 	DOLAR, ARROBA, ASPERSAR, NUMERAL, APILAR, DESAPILAR, DOBLERAYA;
 terminal    SUMA, RESTA, MULT, DIV, LOG, ELEVADO;
 /* Operadores */
 terminal 	OPLOGICOS, OPRELACIONALES;
-
-terminal 	LINEABLANCO, TKNUM, TKIDSIMBOLOS, TKIDPARAMETROS, 
+/* Identificadores */
+terminal 	TKIDSIMBOLOS, TKIDPARAMETROS;
+/* Otros */
+terminal 	LINEABLANCO, TKNUM, 
 		 	COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, OPGENERATRIZ,
 		 	OPFUNCIONDEPARAMETRO;
 
@@ -103,30 +105,25 @@ non terminal angulo;
 non terminal posicion;
 
 non terminal matriz;
-
-/*
-
-
-
-
-
-
 non terminal movimientos;
 non terminal lista_lista_expresiones;
 non terminal lista_expresiones;
 non terminal dolar_aspersar; 
 non terminal siguiente; 
+
 non terminal generatriz;
 non terminal lista_generatriz;
-non terminal f_generatriz;
 non terminal produccion; 
 non terminal expresion_logica; 
 non terminal probabilidad;
-*/
+
+/* PRECEDENCIAS */
 
 precedence left SUMA, RESTA;
 precedence left MULT, DIV;
 precedence left LOG, ELEVADO;
+
+/* PRODUCCION EN LA QUE INICIARA */
 
 start with programa;
 
@@ -168,47 +165,44 @@ angulo ::= ANGULO TKNUM;
 posicion ::= POSICION ABRIRPARENTESIS TKNUM COMA TKNUM CERRARPARENTESIS TKNUM;
 
 matriz ::= MATRIZ movimientos LINEABLANCO generatriz;
-
 movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones siguiente | 
 				ARROBA  TKIDSIMBOLOS lista_lista_expresiones siguiente |
 				DOLAR   	dolar_aspersar siguiente | 
 				ASPERSAR 	dolar_aspersar siguiente |
 				APILAR  	movimientos; 
-
-/*
-
-
-
-
-
-
-
-
-
-
-
-
-
 dolar_aspersar ::= ABRIRPARENTESIS expresiones CERRARPARENTESIS |;
-
 siguiente ::= DOBLERAYA movimientos |  DESAPILAR DOBLERAYA movimientos | DESAPILAR |;
-
 lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS ;  
-
 lista_expresiones ::= expresiones COMA lista_expresiones | expresiones;
 
 generatriz ::= GENERATRIZ lista_generatriz;
-
-lista_generatriz ::=  produccion probabilidad movimientos f_generatriz | produccion movimientos f_generatriz | FIN;
-
-f_generatriz ::= LINEABLANCO lista_generatriz;
-
+lista_generatriz ::=  	produccion probabilidad movimientos LINEABLANCO lista_generatriz | 
+						produccion movimientos LINEABLANCO lista_generatriz | 
+						FIN;
 produccion ::= 	TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS DOSPUNTOS expresion_logica OPGENERATRIZ | 
 				TKIDSIMBOLOS OPGENERATRIZ | 
 				TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS OPGENERATRIZ | 
 				TKIDSIMBOLOS DOSPUNTOS expresion_logica OPGENERATRIZ;
 
 expresion_logica ::= TKIDPARAMETROS OPLOGICOS TKNUM | TKIDPARAMETROS OPRELACIONALES TKNUM;
-
 probabilidad ::= PROBABILIDAD TKNUM;
+
+/*
+
+movimientos ::= APILAR movimiento movimientos |
+				DOBLERAYA movimiento movimientos | 
+				movimiento movimientos | 
+				movimiento;
+
+movimiento ::=  DOLAR 	 | 
+				DOLAR    ABRIRPARENTESIS expresiones CERRARPARENTESIS |
+				ASPERSAR | 
+				ASPERSAR ABRIRPARENTESIS expresiones CERRARPARENTESIS |
+				NUMERAL TKIDSIMBOLOS |
+				NUMERAL TKIDSIMBOLOS ABRIRPARENTESIS movimiento_expresiones CERRARPARENTESIS | 
+				ARROBA  TKIDSIMBOLOS |
+				ARROBA  TKIDSIMBOLOS ABRIRPARENTESIS movimiento_expresiones CERRARPARENTESIS;
+
+movimiento_expresiones ::= expresiones COMA movimiento_expresiones | expresiones;
+
 */
