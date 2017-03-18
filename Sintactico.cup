@@ -41,6 +41,7 @@ non terminal generatriz;
 
 
 
+
 start with programa;
 
 /* PRODUCCIONES */
