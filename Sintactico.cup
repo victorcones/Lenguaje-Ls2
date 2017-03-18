@@ -12,7 +12,7 @@ terminal 	TKTITULO, TKCOMENTARIO, LINEABLANCO, GRAMATICA, VALOR, SIMBOLO,
 		 	CONDICIONES, COMENTARIOS, PASOS, ANGULO, POSICION, MATRIZ, GENERATRIZ, PROBABILIDAD,
 		 	TKNUM, TIPOREAL, OPFUNCIONDEPARAMETRO, OPARITMETICOS, OPRELACIONALES,
 		 	OPLOGICOS, OPGENERATRIZ, TKIDSIMBOLOS, PARAMETRO, TKIDPARAMETROS, 
-		 	NUMERAL,ARROBA,DOLLAR,AMPERSAND,ABRIRLLAVE,CERRARLLAVE, DOBLERAYA, COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, FIN;
+		 	DOLAR, ARROBA, ASPERSAR, NUMERAL, APILAR, DESAPILAR, DOBLERAYA, COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, FIN;
 
 /* NO TERMINALES */
 
@@ -37,10 +37,14 @@ non terminal matriz;
 non terminal movimientos;
 non terminal lista_lista_expresiones;
 non terminal lista_expresiones;
+non terminal dolar_aspersar; 
+non terminal siguiente; 
 non terminal generatriz;
-
-
-
+non terminal lista_generatriz;
+non terminal f_generatriz;
+non terminal produccion; 
+non terminal expresion_logica; 
+non terminal probabilidad;
 
 start with programa;
 
@@ -54,7 +58,7 @@ comentario ::= TKCOMENTARIO LINEABLANCO;
 
 gramatica ::= GRAMATICA parametros_variables;
 
-parametros_variables ::= parametro_variable parametros_variables | parametros_funciones; 
+parametros_variables ::= parametro_variable parametros_variables | parametros_funciones ; 
 
 parametro_variable ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL VALOR TKNUM;
 
@@ -64,13 +68,9 @@ parametro_funcion ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL OPFUNCIONDEPAR
 
 expresiones ::= TKIDPARAMETROS | TKNUM  | TKIDPARAMETROS operacion expresiones | TKNUM operacion expresiones | ABRIRPARENTESIS expresiones CERRARPARENTESIS operacion expresiones | ABRIRPARENTESIS expresiones CERRARPARENTESIS; 
 
-operacion ::= OPARITMETICOS | OPRELACIONALES;
+operacion ::= OPARITMETICOS;
 
-<<<<<<< HEAD
 simbolos ::= simbolo simbolos | LINEABLANCO condiciones;
-=======
-simbolos ::= simbolo simbolos;
->>>>>>> parent of 420fedc... Se agrego vacio en simbolos
 
 simbolo ::= SIMBOLO TKIDSIMBOLOS | SIMBOLO TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS;
 
@@ -84,13 +84,33 @@ angulo ::= ANGULO TKNUM;
 
 posicion ::= POSICION ABRIRPARENTESIS TKNUM COMA TKNUM CERRARPARENTESIS TKNUM;
 
-matriz ::= MATRIZ movimientos LINEABLANCO;
+matriz ::= MATRIZ movimientos LINEABLANCO generatriz;
 
-/*movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones | ARROBA TKIDSIMBOLOS lista_lista_expresiones | DOLLAR lista_lista_expresiones | AMPERSAND lista_lista_expresiones 
-| ABRIRLLAVE movimientos | CERRARLLAVE generatriz | CERRARLLAVE DOBLERAYA movimientos;
+movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones siguiente | 
+				ARROBA  TKIDSIMBOLOS lista_lista_expresiones siguiente |
+				DOLAR   	dolar_aspersar siguiente | 
+				ASPERSAR 	dolar_aspersar siguiente |
+				APILAR  	movimientos; 
 
-lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS DOBLERAYA movimientos | ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS generatriz | DOBLERAYA movimientos | generatriz | generatriz movimientos;  
+dolar_aspersar ::= ABRIRPARENTESIS expresiones CERRARPARENTESIS |;
+
+siguiente ::= DOBLERAYA movimientos |  DESAPILAR DOBLERAYA movimientos | DESAPILAR |;
+
+lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS ;  
 
 lista_expresiones ::= expresiones COMA lista_expresiones | expresiones;
 
-generatriz ::= GENERATRIZ LINEABLANCO|;*/
+generatriz ::= GENERATRIZ lista_generatriz;
+
+lista_generatriz ::=  produccion probabilidad movimientos f_generatriz | produccion movimientos f_generatriz | FIN;
+
+f_generatriz ::= LINEABLANCO lista_generatriz;
+
+produccion ::= 	TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS DOSPUNTOS expresion_logica OPGENERATRIZ | 
+				TKIDSIMBOLOS OPGENERATRIZ | 
+				TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS OPGENERATRIZ | 
+				TKIDSIMBOLOS DOSPUNTOS expresion_logica OPGENERATRIZ;
+
+expresion_logica ::= TKIDPARAMETROS OPLOGICOS TKNUM | TKIDPARAMETROS OPRELACIONALES TKNUM;
+
+probabilidad ::= PROBABILIDAD TKNUM;

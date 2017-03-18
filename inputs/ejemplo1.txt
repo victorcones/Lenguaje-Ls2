@@ -6,7 +6,33 @@ Ver el ejemplo 3 en el documento.
 Gramatica 
 parametro c:Real valor 1.0
 parametro c:Real valor 1.0
-parametro p:Real := 1.0
+parametro h:Real := (p*q)^0.2
 simbolo F(x,t)
 simbolo X
 simbolo F(x1)
+
+Condiciones
+pasos 10
+angulo 86
+posicion (0.0,0.0) 90
+
+matriz
+#F(x*p,2)--&--#F(x*h,1)--$--$--#F(x*h,1)--&--#F(x*q,0)--{$--#F(x*h,1)
+
+generatriz
+F(x,t) : t=0 ->
+#F(x*p,2)--&--#F(x*h,1)--$--$--#F(x*h,1)--&--#F(x*q,0)
+
+F(x,t):t>0 ->
+probabilidad 0.33
+#F(x,t-1)
+
+F(x,t):t>0 ->
+probabilidad 0.33
+#F(x,t-1)
+
+F(x,a,b,b,t):a>1 ->
+probabilidad 0.33
+#F(x,t-1)
+
+Fin
