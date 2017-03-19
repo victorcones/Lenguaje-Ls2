@@ -1,0 +1,46 @@
+﻿titulo:
+
+(LISTO) - El título del programa será utilizado para establecer el contexto de los mensajes de error durante el análisis estático o dinámico.
+
+
+Gramatica:
+
+(LISTO) (Simbolo) - Analizar que un token tkidparametro y tkidsimbolo no se repita
+
+(LISTO)  " Puede haber tantos parámetros como sea necesario, en líneas contiguas, pero cada uno debe aparecer solamente una vez en la lista")
+
+(LISTO) -<valor_inicial> debe corresponder con su <tipo> (este realmente solo se definio un tipo real asi que no se). 
+
+
+Condiciones
+
+(LISTO) -pasos: <número> debe ser un número natural mayor que 0. 
+(LISTO) -angulo: Los ángulos se mide en grados  es un valor entero entre 0 y 90. 
+(LISTO) -punto:  es un par ordenado (Float,Float)
+(LISTO) -angulo de punto: es una valor entre 0 y 180. 
+
+
+matriz
+
+- No tiene sentido empilar o desempilar dos veces seguidas
+
+-lista_expresiones_aritméticas se tienen que establecer las prioridades de los operadores +,-,*,/
+
+
+generatriz
+
+- Analizar que un token tkidparametro y tkidsimbolo no se repita
+
+
+-lista_expresiones_aritméticas se tienen que establecer las prioridades de los operadores +,-,*,/,log,^
+
+- division entre 0
+
+probabilidad:
+
+-Cuando hay varias producciones para un mismo símbolo, sin guardas, debe incluirse su probabilidad, en caso contrario se omite. Todas las probabilidades para un mismo símbolo deben sumar 1.
+-<número> es un número real de dos decimales en (0,1].
+
+- No tiene sentido empilar o desempilar dos veces seguidas
+
+

@@ -12,6 +12,7 @@ PuntoCodigo.class
 Simbolo.class
 Tabla.class
 Tipo.class
+Expresion.class
 
 java_cup/*
 JLex/*

@@ -111,6 +111,7 @@ non terminal lista_lista_expresiones;
 non terminal lista_expresiones;
 non terminal dolar_aspersar; 
 non terminal siguiente; 
+non terminal lista_desapilar;
 
 non terminal generatriz;
 non terminal lista_generatriz;
@@ -123,7 +124,7 @@ non terminal probabilidad;
 precedence left SUMA, RESTA;
 precedence left MULT, DIV;
 precedence left LOG, ELEVADO;
-
+precedence left DESAPILAR;
 /* PRODUCCION EN LA QUE INICIARA */
 
 start with programa;
@@ -231,7 +232,15 @@ movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones siguiente |
 				ASPERSAR 	dolar_aspersar siguiente |
 				APILAR  	movimientos; 
 dolar_aspersar ::= ABRIRPARENTESIS expresiones CERRARPARENTESIS |;
-siguiente ::= DOBLERAYA movimientos |  DESAPILAR DOBLERAYA movimientos | DESAPILAR |;
+siguiente ::= DOBLERAYA movimientos |  lista_desapilar siguiente|;
+lista_desapilar ::= DESAPILAR lista_desapilar 
+					| DESAPILAR:desapilar
+					{:
+						System.out.println("Siguiente token: " + PuntoCodigo.token);
+						System.out.println("Desapilar: " + desapilar.toString());
+						if(PuntoCodigo.token.equals(desapilar.toString()))
+							System.out.println("Hay mas de dos desapilar: " + PuntoCodigo.token);
+					:};
 lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS ;  
 lista_expresiones ::= expresiones COMA lista_expresiones | expresiones;
 
