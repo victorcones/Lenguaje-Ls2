@@ -7,6 +7,7 @@ action code {:
 
 	void inicializar(){
 		tabla = new Tabla();
+		PuntoCodigo.agregarTitulo("Ls2. ");
 	}
 
 	boolean existeSimbolo(String id){
@@ -30,7 +31,7 @@ parser code {:
 
 	// Muestra el texto de un error
 	public void report_error(String message) {
-		System.err.println(message);
+		System.err.println(PuntoCodigo.titulo + " " + message);
 	}
 
 	// Muestra un error de sintaxis
@@ -45,7 +46,7 @@ parser code {:
 
 	// Muestra el texto de un error irrecuperable
 	public void report_fatal_error(String message, Object info) {
-		System.err.println(message);
+		System.err.println(PuntoCodigo.titulo + " " + message);
 	}
 
 	// Muestra un mensaje cuando no se puede seguir analizando
@@ -74,7 +75,7 @@ terminal 	OPLOGICOS, OPRELACIONALES;
 /* Identificadores */
 terminal 	TKIDSIMBOLOS, TKIDPARAMETROS;
 /* Otros */
-terminal 	LINEABLANCO, TKNUM, 
+terminal 	LINEABLANCO, REAL, ENTERO,
 		 	COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, OPGENERATRIZ,
 		 	OPFUNCIONDEPARAMETRO;
 
@@ -129,19 +130,39 @@ start with programa;
 
 /* PRODUCCIONES */
 
-programa ::= titulo comentario gramatica;
+programa ::= {:
+                  inicializar();
+             :}
+             titulo comentario gramatica;
 
-titulo ::=  TKTITULO LINEABLANCO;
+titulo ::=  TKTITULO:titulo LINEABLANCO 
+			{:
+				PuntoCodigo.agregarTitulo(titulo.toString().replaceAll("Titulo:(\\s)*",""));
+			:};
 
 comentario ::= TKCOMENTARIO LINEABLANCO;
 
 gramatica ::= GRAMATICA parametros_variables ;
 
 parametros_variables ::= parametro_variable parametros_variables | parametros_funciones; 
-parametro_variable ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL VALOR TKNUM;
+parametro_variable ::= PARAMETRO TKIDPARAMETROS:idP DOSPUNTOS TIPOREAL VALOR REAL
+						{:
+							if (existeSimbolo(idP.toString())) 
+							    parser.error(MensajesError.parametroRedeclarado);
+							else
+							    agregarSimbolo(idP.toString());
+							// imprimeTS();
+                		:};
 
 parametros_funciones ::= parametro_funcion parametros_funciones | simbolos;
-parametro_funcion ::= PARAMETRO TKIDPARAMETROS DOSPUNTOS TIPOREAL OPFUNCIONDEPARAMETRO expresiones;
+parametro_funcion ::= PARAMETRO TKIDPARAMETROS:idP DOSPUNTOS TIPOREAL OPFUNCIONDEPARAMETRO expresiones
+						{:
+							if (existeSimbolo(idP.toString())) 
+							    parser.error(MensajesError.parametroRedeclarado);
+							else
+							    agregarSimbolo(idP.toString());
+							// imprimeTS();
+                		:};
 
 expresiones ::= expresion expresiones | expresion;
 expresion ::= 	expresion SUMA 	  expresion |
@@ -151,18 +172,57 @@ expresion ::= 	expresion SUMA 	  expresion |
 				expresion LOG 	  expresion |
 				expresion ELEVADO expresion |
 				ABRIRPARENTESIS expresion CERRARPARENTESIS |
-				TKNUM |
-				TKIDPARAMETROS;
+				REAL |
+				ENTERO |
+				TKIDPARAMETROS:idP
+				{:
+                   if (!existeSimbolo(idP.toString()))
+                       parser.error(MensajesError.parametroNoDeclarado);
+                :};
 
 simbolos ::= simbolo simbolos | LINEABLANCO condiciones;
-simbolo ::=  SIMBOLO TKIDSIMBOLOS | 
-			 SIMBOLO TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS;
-parametros_simbolos ::= TKIDPARAMETROS COMA parametros_simbolos | TKIDPARAMETROS;
+simbolo ::=  SIMBOLO TKIDSIMBOLOS:idS 
+			{:
+				if (existeSimbolo(idS.toString())) 
+				    parser.error(MensajesError.simboloRedeclarado);
+				else
+				    agregarSimbolo(idS.toString());
+				// imprimeTS();
+    		:}| 
+			 SIMBOLO TKIDSIMBOLOS:idS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS
+			{:
+				if (existeSimbolo(idS.toString())) 
+				    parser.error(MensajesError.simboloRedeclarado);
+				else
+				    agregarSimbolo(idS.toString());
+				// imprimeTS();
+    		:};
+parametros_simbolos ::= TKIDPARAMETROS:idP COMA parametros_simbolos 
+			{:
+               if (!existeSimbolo(idP.toString()))
+                   parser.error(MensajesError.parametroNoDeclarado);
+            :} | TKIDPARAMETROS:idP
+			{:
+               if (!existeSimbolo(idP.toString()))
+                   parser.error(MensajesError.parametroNoDeclarado);
+            :};
 
 condiciones ::= CONDICIONES pasos angulo posicion LINEABLANCO matriz;
-pasos ::= PASOS TKNUM;
-angulo ::= ANGULO TKNUM;
-posicion ::= POSICION ABRIRPARENTESIS TKNUM COMA TKNUM CERRARPARENTESIS TKNUM;
+pasos ::= PASOS ENTERO:entero
+			{:
+               	if ( Integer.parseInt((String) entero) <= 0)
+                   parser.error(MensajesError.numeroPasosInvalido);
+            :};
+angulo ::= ANGULO ENTERO:entero
+			{:
+               	if (!(Integer.parseInt((String) entero) >= 0 && Integer.parseInt((String) entero) <= 90))
+                   parser.error(MensajesError.numeroAnguloInvalido);
+            :};
+posicion ::= POSICION ABRIRPARENTESIS REAL COMA REAL CERRARPARENTESIS ENTERO:angulo
+			{:
+	           	if (!(Integer.parseInt((String) angulo) >= 0 && Integer.parseInt((String) angulo) <= 180))
+	               parser.error(MensajesError.numeroPosicionAnguloInvalido);
+            :};
 
 matriz ::= MATRIZ movimientos LINEABLANCO generatriz;
 movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones siguiente | 
@@ -183,8 +243,11 @@ produccion ::= 	TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESI
 				TKIDSIMBOLOS OPGENERATRIZ | 
 				TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS OPGENERATRIZ | 
 				TKIDSIMBOLOS DOSPUNTOS expresion_logica OPGENERATRIZ;
-expresion_logica ::= TKIDPARAMETROS OPLOGICOS TKNUM | TKIDPARAMETROS OPRELACIONALES TKNUM;
-probabilidad ::= PROBABILIDAD TKNUM;
+expresion_logica ::= TKIDPARAMETROS OPLOGICOS ENTERO | 
+					 TKIDPARAMETROS OPLOGICOS REAL | 
+					 TKIDPARAMETROS OPRELACIONALES ENTERO |
+					 TKIDPARAMETROS OPRELACIONALES REAL;
+probabilidad ::= PROBABILIDAD REAL;
 
 /*
 movimientos ::= movimiento movimientos | 

@@ -8,7 +8,7 @@ class Tabla {
 	Tabla() {
 		tablaSimbolos = new Vector();
 		tablaTipos = new Vector();
-		Tipo t = new Tipo(0,"int");
+		Tipo t = new Tipo(0,"Real");
 		t.setDimension(1);
 		addTipo(t);
 	}

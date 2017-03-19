@@ -5,14 +5,22 @@ Ver el ejemplo 3 en el documento.
 
 Gramatica 
 parametro c:Real valor 1.0
-parametro c:Real valor 1.0
+parametro d:Real valor 1.0
+parametro x:Real valor 1.0
+parametro p:Real valor 1.0
+parametro q:Real valor 1.0
+parametro t:Real valor 1.0
+parametro x1:Real valor 1.0
 parametro h:Real := (p*q)^0.2
+parametro a:Real := (p*q)^0.2
+parametro b:Real := (p*q)^0.2
 simbolo F(x,t)
 simbolo X
-simbolo F(x1)
+simbolo D
+simbolo C(x1)
 
 Condiciones
-pasos 10
+pasos 8
 angulo 86
 posicion (0.0,0.0) 90
 

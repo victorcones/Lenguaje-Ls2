@@ -1,7 +1,13 @@
 class MensajesError {
 
+	static final String parametroNoDeclarado = "El parametro no ha sido declarado previamente";
+	static final String parametroRedeclarado = "El parametro ya ha sido declarado anteriormente";
 	static final String simboloRedeclarado = "El simbolo ya ha sido declarado anteriormente";
 	static final String simboloNoDeclarado = "El simbolo no ha sido declarado previamente";
+	static final String numeroPasosInvalido = "El numero de pasos debe ser mayor que cero";
+	static final String numeroAnguloInvalido = "El angulo debe estar entre cero y noventa";
+	static final String numeroPosicionAnguloInvalido = "El angulo de la posicion debe estar entre cero y ciento ochenta";
+
 	static final String breakSinWhile = "Se ha utilizado un break fuera de un bloque while";
 	static final String ficheroCiNoExiste = "El fichero del CI no existe";
 	static final String existeTipo = "El tipo definido ya existe";

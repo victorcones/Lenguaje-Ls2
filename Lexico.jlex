@@ -103,9 +103,8 @@ BLOQUEDECOMENTARIO = (({LETRAS})|({DIGITOS})|({ESPACIOOTERMINADOR}))*
 TKTITULO = ({TITULO})({DOSPUNTOS})({NOMBREDELTITULO})({PUNTO})
 TKCOMENTARIO = ({COMENTARIOS})({BLOQUEDECOMENTARIO})({PUNTO})
 
-REAL = ({DIGITOS})+({PUNTO})({DIGITOS})+
-ENTERO = ({DIGITOS})+
-TKNUM = {REAL}|{ENTERO}
+REAL = ({RESTA})?({DIGITOS})+({PUNTO})({DIGITOS})+
+ENTERO = ({RESTA})?({DIGITOS})+
 
 ALFANUMERICO = ({LETRAS}|{DIGITOS})*
 TKIDSIMBOLOS = ([A-Z])({DIGITOS})*
@@ -166,9 +165,13 @@ TKIDPARAMETROS = ([a-z])({ALFANUMERICO})
 {
    return Token(sym.PROBABILIDAD);
 }
-<YYINITIAL> {TKNUM}                       
+<YYINITIAL> {REAL}                       
 {
-   return Token(sym.TKNUM);
+   return Token(sym.REAL);
+}
+<YYINITIAL> {ENTERO}
+{
+   return Token(sym.ENTERO);
 }
 <YYINITIAL> {TIPOREAL}                       
 {
