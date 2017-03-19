@@ -7,5 +7,11 @@ parser.class
 sym.class 
 Yylex.class
 
+MensajesError.class
+PuntoCodigo.class
+Simbolo.class
+Tabla.class
+Tipo.class
+
 java_cup/*
 JLex/*

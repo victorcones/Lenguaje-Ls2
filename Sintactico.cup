@@ -1,30 +1,267 @@
 import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+action code {:
+	Tabla tabla;
+
+	void inicializar(){
+		tabla = new Tabla();
+		PuntoCodigo.agregarTitulo("Ls2. ");
+	}
+
+	boolean existeSimbolo(String id){
+		return tabla.existeSimbolo(id);    
+	}
+
+	void agregarSimbolo(String id){
+		tabla.addSimbolo(id);
+	}
+
+	void imprimeTS(){
+		tabla.imprimir();
+	}
+:}    
 
 parser code {:
-            public static void main(String args[]) throws Exception {
-                new parser(new Yylex(System.in)).parse();
-            }
+
+	public static void main(String args[]) throws Exception {
+        new parser(new Yylex(System.in)).parse();
+    }
+
+	// Muestra el texto de un error
+	public void report_error(String message) {
+		System.err.println(PuntoCodigo.titulo + " " + message);
+	}
+
+	// Muestra un error de sintaxis
+	public void syntax_error(Symbol actual) {
+		if (actual.sym == sym.EOF)
+			report_error("Intruccion incompleta en linea : "+PuntoCodigo.linea+
+				       " Token : "+PuntoCodigo.token);
+		else
+			report_error("Error sintactico en linea : "+PuntoCodigo.linea+
+				       " Token : "+PuntoCodigo.token);
+	}
+
+	// Muestra el texto de un error irrecuperable
+	public void report_fatal_error(String message, Object info) {
+		System.err.println(PuntoCodigo.titulo + " " + message);
+	}
+
+	// Muestra un mensaje cuando no se puede seguir analizando
+	public void unrecovered_syntax_error(Symbol actual) {
+	}
+
+	//Muestra un mensaje de error con linea, token y mensaje
+	public void error(String mensaje) {
+		report_error("ERROR -> Linea: "+PuntoCodigo.linea+" Lexema: "+PuntoCodigo.token+" "+mensaje);
+	}
 :}
 
 /* TERMINALES */
 
-terminal 	TKTITULO, TKCOMENTARIO, LINEABLANCO, GRAMATICA, VALOR, SIMBOLO,
-		 	CONDICIONES, PASOS, ANGULO, POSICION, MATRIZ, GENERATRIZ, PROBABILIDAD,
-		 	TKNUM, TIPOREAL, OPFUNCIONDEPARAMETRO, OPARITMETICOS, OPRELACIONALES,
-		 	OPLOGICOS, OPGENERATRIZ, TKIDSIMBOLOS, PARAMETRO, TKIDPARAMETROS, 
-		 	OPMOVIMIENTO, DOBLERAYA, COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, FIN;
+/* Tokens */
+terminal TKTITULO, TKCOMENTARIO;
+/* Palabras clave */
+terminal 	GRAMATICA, PARAMETRO, VALOR, SIMBOLO, CONDICIONES, PASOS, ANGULO, POSICION,
+			MATRIZ, GENERATRIZ, PROBABILIDAD, FIN, TIPOREAL;
+/* Operadores de movimiento matriz */
+terminal 	DOLAR, ARROBA, ASPERSAR, NUMERAL, APILAR, DESAPILAR, DOBLERAYA;
+/* Operadores aritmeticos */
+terminal    SUMA, RESTA, MULT, DIV, LOG, ELEVADO;
+/* Operadores */
+terminal 	OPLOGICOS, OPRELACIONALES;
+/* Identificadores */
+terminal 	TKIDSIMBOLOS, TKIDPARAMETROS;
+/* Otros */
+terminal 	LINEABLANCO, REAL, ENTERO,
+		 	COMA, PUNTO, DOSPUNTOS, ABRIRPARENTESIS, CERRARPARENTESIS, OPGENERATRIZ,
+		 	OPFUNCIONDEPARAMETRO;
 
 /* NO TERMINALES */
 
 non terminal programa;
+
 non terminal titulo;
-/*non terminal comentario;
-non terminal gramatica;*/
+
+non terminal comentario;
+
+non terminal gramatica;
+non terminal parametros_variables;
+non terminal parametro_variable;
+non terminal parametros_funciones;
+non terminal parametro_funcion;
+
+non terminal expresiones;
+non terminal expresion;
+
+non terminal simbolos;
+non terminal simbolo;
+non terminal parametros_simbolos;
+
+non terminal condiciones;
+non terminal pasos;
+non terminal angulo;
+non terminal posicion;
+
+non terminal matriz;
+non terminal movimientos;
+non terminal lista_lista_expresiones;
+non terminal lista_expresiones;
+non terminal dolar_aspersar; 
+non terminal siguiente; 
+
+non terminal generatriz;
+non terminal lista_generatriz;
+non terminal produccion; 
+non terminal expresion_logica; 
+non terminal probabilidad;
+
+/* PRECEDENCIAS */
+
+precedence left SUMA, RESTA;
+precedence left MULT, DIV;
+precedence left LOG, ELEVADO;
+
+/* PRODUCCION EN LA QUE INICIARA */
 
 start with programa;
 
 /* PRODUCCIONES */
 
-programa ::= titulo;
+programa ::= {:
+                  inicializar();
+             :}
+             titulo comentario gramatica;
 
-titulo   ::= TKTITULO;
+titulo ::=  TKTITULO:titulo LINEABLANCO 
+			{:
+				PuntoCodigo.agregarTitulo(titulo.toString().replaceAll("Titulo:(\\s)*",""));
+			:};
+
+comentario ::= TKCOMENTARIO LINEABLANCO;
+
+gramatica ::= GRAMATICA parametros_variables ;
+
+parametros_variables ::= parametro_variable parametros_variables | parametros_funciones; 
+parametro_variable ::= PARAMETRO TKIDPARAMETROS:idP DOSPUNTOS TIPOREAL VALOR REAL
+						{:
+							if (existeSimbolo(idP.toString())) 
+							    parser.error(MensajesError.parametroRedeclarado);
+							else
+							    agregarSimbolo(idP.toString());
+							// imprimeTS();
+                		:};
+
+parametros_funciones ::= parametro_funcion parametros_funciones | simbolos;
+parametro_funcion ::= PARAMETRO TKIDPARAMETROS:idP DOSPUNTOS TIPOREAL OPFUNCIONDEPARAMETRO expresiones
+						{:
+							if (existeSimbolo(idP.toString())) 
+							    parser.error(MensajesError.parametroRedeclarado);
+							else
+							    agregarSimbolo(idP.toString());
+							// imprimeTS();
+                		:};
+
+expresiones ::= expresion expresiones | expresion;
+expresion ::= 	expresion SUMA 	  expresion |
+				expresion RESTA   expresion |
+				expresion MULT 	  expresion |
+				expresion DIV 	  expresion |
+				expresion LOG 	  expresion |
+				expresion ELEVADO expresion |
+				ABRIRPARENTESIS expresion CERRARPARENTESIS |
+				REAL |
+				ENTERO |
+				TKIDPARAMETROS:idP
+				{:
+                   if (!existeSimbolo(idP.toString()))
+                       parser.error(MensajesError.parametroNoDeclarado);
+                :};
+
+simbolos ::= simbolo simbolos | LINEABLANCO condiciones;
+simbolo ::=  SIMBOLO TKIDSIMBOLOS:idS 
+			{:
+				if (existeSimbolo(idS.toString())) 
+				    parser.error(MensajesError.simboloRedeclarado);
+				else
+				    agregarSimbolo(idS.toString());
+				// imprimeTS();
+    		:}| 
+			 SIMBOLO TKIDSIMBOLOS:idS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS
+			{:
+				if (existeSimbolo(idS.toString())) 
+				    parser.error(MensajesError.simboloRedeclarado);
+				else
+				    agregarSimbolo(idS.toString());
+				// imprimeTS();
+    		:};
+parametros_simbolos ::= TKIDPARAMETROS:idP COMA parametros_simbolos 
+			{:
+               if (!existeSimbolo(idP.toString()))
+                   parser.error(MensajesError.parametroNoDeclarado);
+            :} | TKIDPARAMETROS:idP
+			{:
+               if (!existeSimbolo(idP.toString()))
+                   parser.error(MensajesError.parametroNoDeclarado);
+            :};
+
+condiciones ::= CONDICIONES pasos angulo posicion LINEABLANCO matriz;
+pasos ::= PASOS ENTERO:entero
+			{:
+               	if ( Integer.parseInt((String) entero) <= 0)
+                   parser.error(MensajesError.numeroPasosInvalido);
+            :};
+angulo ::= ANGULO ENTERO:entero
+			{:
+               	if (!(Integer.parseInt((String) entero) >= 0 && Integer.parseInt((String) entero) <= 90))
+                   parser.error(MensajesError.numeroAnguloInvalido);
+            :};
+posicion ::= POSICION ABRIRPARENTESIS REAL COMA REAL CERRARPARENTESIS ENTERO:angulo
+			{:
+	           	if (!(Integer.parseInt((String) angulo) >= 0 && Integer.parseInt((String) angulo) <= 180))
+	               parser.error(MensajesError.numeroPosicionAnguloInvalido);
+            :};
+
+matriz ::= MATRIZ movimientos LINEABLANCO generatriz;
+movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones siguiente | 
+				ARROBA  TKIDSIMBOLOS lista_lista_expresiones siguiente |
+				DOLAR   	dolar_aspersar siguiente | 
+				ASPERSAR 	dolar_aspersar siguiente |
+				APILAR  	movimientos; 
+dolar_aspersar ::= ABRIRPARENTESIS expresiones CERRARPARENTESIS |;
+siguiente ::= DOBLERAYA movimientos |  DESAPILAR DOBLERAYA movimientos | DESAPILAR |;
+lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS ;  
+lista_expresiones ::= expresiones COMA lista_expresiones | expresiones;
+
+generatriz ::= GENERATRIZ lista_generatriz;
+lista_generatriz ::=  	produccion probabilidad movimientos LINEABLANCO lista_generatriz | 
+						produccion movimientos LINEABLANCO lista_generatriz | 
+						FIN;
+produccion ::= 	TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS DOSPUNTOS expresion_logica OPGENERATRIZ | 
+				TKIDSIMBOLOS OPGENERATRIZ | 
+				TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS OPGENERATRIZ | 
+				TKIDSIMBOLOS DOSPUNTOS expresion_logica OPGENERATRIZ;
+expresion_logica ::= TKIDPARAMETROS OPLOGICOS ENTERO | 
+					 TKIDPARAMETROS OPLOGICOS REAL | 
+					 TKIDPARAMETROS OPRELACIONALES ENTERO |
+					 TKIDPARAMETROS OPRELACIONALES REAL;
+probabilidad ::= PROBABILIDAD REAL;
+
+/*
+movimientos ::= movimiento movimientos | 
+				movimiento;
+
+movimiento ::=  DOLAR 	 | 
+				DOLAR    ABRIRPARENTESIS expresiones CERRARPARENTESIS |
+				ASPERSAR | 
+				ASPERSAR ABRIRPARENTESIS expresiones CERRARPARENTESIS |
+				NUMERAL TKIDSIMBOLOS |
+				NUMERAL TKIDSIMBOLOS ABRIRPARENTESIS movimiento_expresiones CERRARPARENTESIS | 
+				ARROBA  TKIDSIMBOLOS |
+				ARROBA  TKIDSIMBOLOS ABRIRPARENTESIS movimiento_expresiones CERRARPARENTESIS;
+
+movimiento_expresiones ::= expresiones COMA movimiento_expresiones | expresiones;
+
+*/
