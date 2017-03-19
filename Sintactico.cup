@@ -183,15 +183,11 @@ produccion ::= 	TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESI
 				TKIDSIMBOLOS OPGENERATRIZ | 
 				TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS OPGENERATRIZ | 
 				TKIDSIMBOLOS DOSPUNTOS expresion_logica OPGENERATRIZ;
-
 expresion_logica ::= TKIDPARAMETROS OPLOGICOS TKNUM | TKIDPARAMETROS OPRELACIONALES TKNUM;
 probabilidad ::= PROBABILIDAD TKNUM;
 
 /*
-
-movimientos ::= APILAR movimiento movimientos |
-				DOBLERAYA movimiento movimientos | 
-				movimiento movimientos | 
+movimientos ::= movimiento movimientos | 
 				movimiento;
 
 movimiento ::=  DOLAR 	 | 
