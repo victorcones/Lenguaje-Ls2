@@ -230,7 +230,11 @@ movimientos ::= NUMERAL TKIDSIMBOLOS lista_lista_expresiones siguiente |
 				ARROBA  TKIDSIMBOLOS lista_lista_expresiones siguiente |
 				DOLAR   	dolar_aspersar siguiente | 
 				ASPERSAR 	dolar_aspersar siguiente |
-				APILAR  	movimientos; 
+				APILAR:apilar{:
+						if(PuntoCodigo.token.equals(apilar.toString())){
+							System.out.println(MensajesError.apilarConsecutivo);
+						}
+					:}  	movimientos; 
 dolar_aspersar ::= ABRIRPARENTESIS expresiones CERRARPARENTESIS |;
 siguiente ::= DOBLERAYA movimientos |  lista_desapilar siguiente|;
 lista_desapilar ::= DESAPILAR lista_desapilar 

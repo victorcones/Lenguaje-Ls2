@@ -8,7 +8,7 @@ class MensajesError {
 	static final String numeroAnguloInvalido = "El angulo debe estar entre cero y noventa";
 	static final String numeroPosicionAnguloInvalido = "El angulo de la posicion debe estar entre cero y ciento ochenta";
 	static final String desapilarConsecutivo = "Desapilar de forma consecutiva no generara ningun cambio en el programa.";
-
+	static final String apilarConsecutivo = "apilar de forma consecutiva no generara ningun cambio en el programa.";
 
 	static final String breakSinWhile = "Se ha utilizado un break fuera de un bloque while";
 	static final String ficheroCiNoExiste = "El fichero del CI no existe";
