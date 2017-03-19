@@ -236,10 +236,9 @@ siguiente ::= DOBLERAYA movimientos |  lista_desapilar siguiente|;
 lista_desapilar ::= DESAPILAR lista_desapilar 
 					| DESAPILAR:desapilar
 					{:
-						System.out.println("Siguiente token: " + PuntoCodigo.token);
-						System.out.println("Desapilar: " + desapilar.toString());
-						if(PuntoCodigo.token.equals(desapilar.toString()))
-							System.out.println("Hay mas de dos desapilar: " + PuntoCodigo.token);
+						if(PuntoCodigo.token.equals(desapilar.toString())){
+							System.out.println(MensajesError.desapilarConsecutivo);
+						}
 					:};
 lista_lista_expresiones ::=  ABRIRPARENTESIS lista_expresiones CERRARPARENTESIS ;  
 lista_expresiones ::= expresiones COMA lista_expresiones | expresiones;
