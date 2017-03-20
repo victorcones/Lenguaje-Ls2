@@ -38,9 +38,9 @@ generatriz
 
 probabilidad:
 
--Cuando hay varias producciones para un mismo símbolo, sin guardas, debe incluirse su probabilidad, en caso contrario se omite. Todas las probabilidades para un mismo símbolo deben sumar 1.
+(LISTO) -Cuando hay varias producciones para un mismo símbolo, sin guardas, debe incluirse su probabilidad, en caso contrario se omite. Todas las probabilidades para un mismo símbolo deben sumar 1.
 -<número> es un número real de dos decimales en (0,1].
 
-- No tiene sentido empilar o desempilar dos veces seguidas
+(LISTO) - No tiene sentido empilar o desempilar dos veces seguidas
 
 

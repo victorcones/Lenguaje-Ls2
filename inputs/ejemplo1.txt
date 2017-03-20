@@ -25,18 +25,22 @@ angulo 86
 posicion (0.0,0.0) 90
 
 matriz
-#F(x*p,2)--&--#F(x*h,1)--$--$--#F(x*h,1)--&--#F(x*q,0)--{$--#F(x*h,1)}}}--$}--$}
+#F(x*p,2)--&--#F(x*h,1)--$--$--#F(x*h,1)--&--#F(x*q,0)--{$--#F(x*h,1)}--$}--$}
 
 generatriz
-C(x,t) : t=0 ->
-#F(x*p,2)--&--#F(x*h,1)--$--$--#F(x*h,1)--&--#F(x*q,0)
-
 H(x,t):t>0 ->
 probabilidad 0.33
 #F(x,t-1)
 
+H(x,t):t>0 ->
+probabilidad 0.67
+#F(x,t-1)
+
 C(x,t) : t=0 ->
 probabilidad 0.50
+#F(x*p,2)--&--#F(x*h,1)--$--$--#F(x*h,1)--&--#F(x*q,0)
+
+D(x,t) : t=0 ->
 #F(x*p,2)--&--#F(x*h,1)--$--$--#F(x*h,1)--&--#F(x*q,0)
 
 C(x,t) : t=0 ->
@@ -49,6 +53,10 @@ probabilidad 0.33
 
 F(x,a,b,b,t):a>1 ->
 probabilidad 0.33
+#F(x,t-1)
+
+F(x,a,b,b,t):a>1 ->
+probabilidad 0.34
 #F(x,t-1)
 
 Fin

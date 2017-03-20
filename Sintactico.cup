@@ -252,7 +252,6 @@ lista_generatriz ::=  	produccion probabilidad movimientos LINEABLANCO lista_gen
 						produccion movimientos LINEABLANCO lista_generatriz | 
 						FIN{:
 							ProbabilidadSimbolo.validarProbabilidades();
-							//Probabilidades.sumarProbabilidades();
 						:};
 produccion ::= 	tkidsimbolos ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS DOSPUNTOS expresion_logica OPGENERATRIZ | 
 				tkidsimbolos OPGENERATRIZ | 
@@ -261,7 +260,6 @@ produccion ::= 	tkidsimbolos ABRIRPARENTESIS parametros_simbolos CERRARPARENTESI
 tkidsimbolos ::= TKIDSIMBOLOS:simbolos
 				{:
 					ProbabilidadSimbolo.agregarPila(simbolos);
-					//Probabilidades.agregarSimbolo(simbolos.toString());
 				:};
 expresion_logica ::= TKIDPARAMETROS OPLOGICOS ENTERO | 
 					 TKIDPARAMETROS OPLOGICOS REAL | 
@@ -270,23 +268,8 @@ expresion_logica ::= TKIDPARAMETROS OPLOGICOS ENTERO |
 probabilidad ::= PROBABILIDAD REAL:r
 				{:
 					Float o = Float.parseFloat((String)r);
+					if(!(o > 0 && o <= 1f) || !(r.toString().matches("[0-9]+.[0-9][0-9]"))){
+						parser.error(MensajesError.numeroProbabilidad);
+					}
 					ProbabilidadSimbolo.agregarPila(o);
-					//Probabilidades.agregarValor(Float.parseFloat((String) r));
 				:};
-
-/*
-movimientos ::= movimiento movimientos | 
-				movimiento;
-
-movimiento ::=  DOLAR 	 | 
-				DOLAR    ABRIRPARENTESIS expresiones CERRARPARENTESIS |
-				ASPERSAR | 
-				ASPERSAR ABRIRPARENTESIS expresiones CERRARPARENTESIS |
-				NUMERAL TKIDSIMBOLOS |
-				NUMERAL TKIDSIMBOLOS ABRIRPARENTESIS movimiento_expresiones CERRARPARENTESIS | 
-				ARROBA  TKIDSIMBOLOS |
-				ARROBA  TKIDSIMBOLOS ABRIRPARENTESIS movimiento_expresiones CERRARPARENTESIS;
-
-movimiento_expresiones ::= expresiones COMA movimiento_expresiones | expresiones;
-
-*/

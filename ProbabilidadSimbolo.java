@@ -21,6 +21,9 @@ class ProbabilidadSimbolo {
 	}
 
 	public void agregarProbabilidad(Float f){
+		if(!tieneProbabilidad){
+			System.out.println("El simbolo " + nombre + " se creo sin probabilidad");
+		}
 		probabilidades.add(f);
 	}
 
@@ -56,7 +59,7 @@ class ProbabilidadSimbolo {
 	       	
 	        if(elemento.sumatoria() != 1f && elemento.tieneProbabilidad){
 	        	System.out.println("Error Semantico, la sumatoria de las probabilidades tiene" +
-	        		"que ser igual a uno.");
+	        		"que ser igual a uno para el simbolo " + elemento.nombre);
 	        }
 
 	        it.remove(); // avoids a ConcurrentModificationException
@@ -97,6 +100,8 @@ class ProbabilidadSimbolo {
 				if(obtenerSimbolo(s) == null){
 					//System.out.println("Metiendo en el mapa " + s + " que no tiene probabilidad");
 					agregarSimbolo(s, false);
+				}else{
+					System.out.println("El simbolo " + s + " ya ha sido declarado con/sin probabilidad");
 				}
 				//System.out.println("Reinsertando en la pila " + t);
 				pila.push(t);
