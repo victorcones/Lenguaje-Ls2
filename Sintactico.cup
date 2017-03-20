@@ -118,7 +118,7 @@ non terminal lista_generatriz;
 non terminal produccion; 
 non terminal expresion_logica; 
 non terminal probabilidad;
-
+non terminal tkidsimbolos;
 /* PRECEDENCIAS */
 
 precedence left SUMA, RESTA;
@@ -250,16 +250,26 @@ lista_expresiones ::= expresiones COMA lista_expresiones | expresiones;
 generatriz ::= GENERATRIZ lista_generatriz;
 lista_generatriz ::=  	produccion probabilidad movimientos LINEABLANCO lista_generatriz | 
 						produccion movimientos LINEABLANCO lista_generatriz | 
-						FIN;
-produccion ::= 	TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS DOSPUNTOS expresion_logica OPGENERATRIZ | 
-				TKIDSIMBOLOS OPGENERATRIZ | 
-				TKIDSIMBOLOS ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS OPGENERATRIZ | 
-				TKIDSIMBOLOS DOSPUNTOS expresion_logica OPGENERATRIZ;
+						FIN{:
+							Probabilidades.sumarProbabilidades();
+						:};
+produccion ::= 	tkidsimbolos ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS DOSPUNTOS expresion_logica OPGENERATRIZ | 
+				tkidsimbolos OPGENERATRIZ | 
+				tkidsimbolos ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS OPGENERATRIZ | 
+				tkidsimbolos DOSPUNTOS expresion_logica OPGENERATRIZ;
+tkidsimbolos ::= TKIDSIMBOLOS:simbolos
+				{:
+					Probabilidades.agregarSimbolo(simbolos.toString());
+				:};
 expresion_logica ::= TKIDPARAMETROS OPLOGICOS ENTERO | 
 					 TKIDPARAMETROS OPLOGICOS REAL | 
 					 TKIDPARAMETROS OPRELACIONALES ENTERO |
 					 TKIDPARAMETROS OPRELACIONALES REAL;
-probabilidad ::= PROBABILIDAD REAL;
+probabilidad ::= PROBABILIDAD REAL:r
+				{:
+					//Probabilidades.agregarPila(r);
+					Probabilidades.agregarValor(Float.parseFloat((String) r));
+				:};
 
 /*
 movimientos ::= movimiento movimientos | 
