@@ -251,7 +251,8 @@ generatriz ::= GENERATRIZ lista_generatriz;
 lista_generatriz ::=  	produccion probabilidad movimientos LINEABLANCO lista_generatriz | 
 						produccion movimientos LINEABLANCO lista_generatriz | 
 						FIN{:
-							Probabilidades.sumarProbabilidades();
+							ProbabilidadSimbolo.validarProbabilidades();
+							//Probabilidades.sumarProbabilidades();
 						:};
 produccion ::= 	tkidsimbolos ABRIRPARENTESIS parametros_simbolos CERRARPARENTESIS DOSPUNTOS expresion_logica OPGENERATRIZ | 
 				tkidsimbolos OPGENERATRIZ | 
@@ -259,7 +260,8 @@ produccion ::= 	tkidsimbolos ABRIRPARENTESIS parametros_simbolos CERRARPARENTESI
 				tkidsimbolos DOSPUNTOS expresion_logica OPGENERATRIZ;
 tkidsimbolos ::= TKIDSIMBOLOS:simbolos
 				{:
-					Probabilidades.agregarSimbolo(simbolos.toString());
+					ProbabilidadSimbolo.agregarPila(simbolos);
+					//Probabilidades.agregarSimbolo(simbolos.toString());
 				:};
 expresion_logica ::= TKIDPARAMETROS OPLOGICOS ENTERO | 
 					 TKIDPARAMETROS OPLOGICOS REAL | 
@@ -267,8 +269,9 @@ expresion_logica ::= TKIDPARAMETROS OPLOGICOS ENTERO |
 					 TKIDPARAMETROS OPRELACIONALES REAL;
 probabilidad ::= PROBABILIDAD REAL:r
 				{:
-					//Probabilidades.agregarPila(r);
-					Probabilidades.agregarValor(Float.parseFloat((String) r));
+					Float o = Float.parseFloat((String)r);
+					ProbabilidadSimbolo.agregarPila(o);
+					//Probabilidades.agregarValor(Float.parseFloat((String) r));
 				:};
 
 /*
